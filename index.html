@@ -12,8 +12,8 @@
 
         <link rel="stylesheet" href="css/normalize.min.css">
         <link rel="stylesheet" href="css/main.css">
-        <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
-        <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">        
+        <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+        <link href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">        
         <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
         <script src="chartjs/Chart.js"></script>
 
@@ -47,20 +47,34 @@
 
                     <script>
                         $('.chartToggle').click(function(event) {
-                            if ($.inArray("toggled", event.currentTarget.classList) > -1) {
-                                console.log(event.currentTarget.classList);
+                            var clickTarget = $(this);
+
+                            if ($.inArray('toggled', $(clickTarget)[0].classList) > -1) {
+                                // the datatype was already selected
+                                clickTarget.removeClass('toggled');
+                                console.log('turning off');
+                            }else{
+                                // show this data type on the graph
+                                clickTarget.addClass('toggled');
+                                console.log('turning on');
                             }
 
+                            console.log(clickTarget);
                         });
 
                         var randomScalingFactor = function() {
                             return Math.round(Math.random() * 100)
                         };
+
+                        // load the last hour stuff for all 3
+                        // show the power
+                        // ** detect clicks on all 3 to make obj
+
                         var lineChartData = {
-                            labels: [],
+                            labels: ["Label1", "Label2", "Label3", "Label4", "Label5",],
                             datasets: [
                                 {
-                                    label: "My First dataset",
+                                    label: "Power Data",
                                     fillColor: "rgba(220,220,220,0.2)",
                                     strokeColor: "rgba(220,220,220,1)",
                                     pointColor: "rgba(220,220,220,1)",
@@ -71,7 +85,7 @@
                                 }
                             ]
 
-                        }
+                        };
 
                         window.onload = function() {
                             var ctx = document.getElementById("canvas").getContext("2d");
