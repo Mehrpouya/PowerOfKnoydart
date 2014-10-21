@@ -63,6 +63,9 @@
                             console.log(clickTarget);
                         });
 
+                        // place to store our raw datas
+                        var chartJSON;
+
                         var randomScalingFactor = function() {
                             return Math.round(Math.random() * 100)
                         };
@@ -90,17 +93,31 @@
                             ]
 
                         };
+                        
 
-                        window.onload = initMap;
+                        window.onload = initGraph;
 
-                        function initMap(){
+                        function initGraph(){
+
+                           chartJSON = $.ajax( "http://cyberscot.co.uk/powerofknoydart/getReading.php?type=lastHour" )
+                              .done(function() {
+                                alert( "success" );
+                              })
+                              .fail(function() {
+                                alert( "error" );
+                              })
+                              .always(function() {
+                                alert( "complete" );
+                              });
+                         
+
                             var ctx = document.getElementById("canvas").getContext("2d");
                             window.myLine = new Chart(ctx).Line(lineChartData, {
                                 responsive: true
                             });
                         }
 
-                        function showHideDataset(''){
+                        function showHideDataset(setname){
 
                         }
 

@@ -1,6 +1,7 @@
 <?php
 
 header('Content-Type: application/json');
+header('Access-Control-Allow-Origin: *');  // remove after dev
 $ini = parse_ini_file("dbconfig.ini");
 $username = $ini['username'];
 $password = $ini['password'];
