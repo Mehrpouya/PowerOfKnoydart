@@ -29,7 +29,7 @@
                 <h1 class="title">The Power of Knoydart</h1>
                 <nav>
                     <ul>
-                        <li class="chartToggle toggled" id="demand"><a href="#">Power Demand</a></li>
+                        <li class="chartToggle" id="demand"><a href="#">Power Demand</a></li>
                         <li class="chartToggle" id="rainfall"><a href="#">Rainfall &amp; Dam Level</a></li>
                         <li class="chartToggle" id="production"><a href="#">Energy Production</a></li>
                     </ul>
@@ -50,17 +50,10 @@
                             Detect clicks across the top nav to change datasets
                          */
                         $('.chartToggle').click(function(event) {
-                            var clickTarget = $(this);
-
-                            if ($.inArray('toggled', $(clickTarget)[0].classList) > -1) {
-                                // the datatype was already selected
-                                clickTarget.removeClass('toggled');
-                            }else{
-                                // show this data type on the graph
-                                clickTarget.addClass('toggled');
+                            if(currentChart !== $(this)[0].id){
+                                currentChart = $(this)[0].id;
+                                console.log('Changing to '+$(this)[0].id);
                             }
-
-                            console.log(clickTarget);
                         });
 
                         // place to store our raw datas
@@ -70,6 +63,9 @@
                             return Math.round(Math.random() * 100)
                         };
 
+                        // what are we showing now?
+                        var currentChart = "demand";
+
                         // load the last hour stuff for all 3
                         // show the power
                         // ** detect clicks on all 3 to make obj
@@ -77,7 +73,7 @@
                         /*
                             Obj to store our working data for the chart
                          */
-                        var lineChartData = {
+                        var chartData = {
                             labels: ["Label1", "Label2", "Label3", "Label4", "Label5", "Label6"],
                             datasets: [
                                 {
@@ -116,27 +112,39 @@
                                 var nthValue = Math.floor(chartJSON.length / 6);
 
                                 var datasets = {}; 
-                                datasets.power = new Array();
-                                datasets.rainfall = new Array();
-                                datasets.production = new Array();
+
+                                datasets.lastHour = {};
+                                datasets.lastDay = {};
+                                datasets.lastWeek = {};
+                                datasets.lastMonth = {}
+
+                                datasets.lastHour.power = new Array();
+                                datasets.lastHour.rainfall = new Array();
+                                datasets.lastHour.dam_lvl = new Array();
+                                datasets.lastHour.production = new Array();
 
                                 var chartDateLabels = new Array();
 
                                 for (var i = 0; i < chartJSON.length; i++) {
-                                    datasets.power.push(chartJSON[i].pow_act);
+
+                                    datasets.lastHour.power.push(chartJSON[i].pow_act);
+                                    datasets.lastHour.rainfall.push(chartJSON[i].rain);
+                                    datasets.lastHour.dam_lvl.push(chartJSON[i].dam_lvl);
+                                    datasets.lastHour.production.push(chartJSON[i].elster);
+
                                     if (i % nthValue == 0) {
                                         chartDateLabels.push(chartJSON[i].datetime);
                                     }
                                 }
-                                lineChartData.labels = chartDateLabels;
-                                lineChartData.datasets[0].data = datasets.power;
-                                console.log(lineChartData);
+                                chartData.labels = chartDateLabels;
+                                chartData.datasets[0].data = datasets.lastHour.power;
+                                console.log(chartData);
 
                                 console.log(chartJSON);
 
 
                                 var ctx = document.getElementById("canvas").getContext("2d");
-                                window.myLine = new Chart(ctx).Line(lineChartData, {
+                                window.myLine = new Chart(ctx).Line(chartData, {
                                     responsive: true
                                 });
                               })
@@ -144,7 +152,7 @@
                                 console.log( "error" );
                               })
                               .always(function() {
-                                console.log( "complete" );
+                                // console.log( "complete" );
                               });
 
                             
