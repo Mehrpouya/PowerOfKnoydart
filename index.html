@@ -78,7 +78,7 @@
                             Obj to store our working data for the chart
                          */
                         var lineChartData = {
-                            labels: ["Label1", "Label2", "Label3", "Label4", "Label5",],
+                            labels: ["Label1", "Label2", "Label3", "Label4", "Label5", "Label6"],
                             datasets: [
                                 {
                                     label: "demand",
@@ -99,22 +99,55 @@
 
                         function initGraph(){
 
-                           chartJSON = $.ajax( "http://cyberscot.co.uk/powerofknoydart/getReading.php?type=lastHour" )
-                              .done(function() {
-                                alert( "success" );
+                            var jqxhr = $.getJSON( "http://cyberscot.co.uk/powerofknoydart/getReading.php?type=lastHour")
+                              .done(function(d) {
+                                chartJSON = d;
+
+                                // cut down the json to every 10th second (most fine grained that we need)
+                                var slimArray = new Array();
+                                for (var i = 0; i < chartJSON.length; i++) {
+                                    if (i % 10 == 0) {
+                                        slimArray.push(chartJSON[i]);
+                                    }
+                                }
+
+                                chartJSON = slimArray;
+
+                                var nthValue = Math.floor(chartJSON.length / 6);
+
+                                var datasets = {}; 
+                                datasets.power = new Array();
+                                datasets.rainfall = new Array();
+                                datasets.production = new Array();
+
+                                var chartDateLabels = new Array();
+
+                                for (var i = 0; i < chartJSON.length; i++) {
+                                    datasets.power.push(chartJSON[i].pow_act);
+                                    if (i % nthValue == 0) {
+                                        chartDateLabels.push(chartJSON[i].datetime);
+                                    }
+                                }
+                                lineChartData.labels = chartDateLabels;
+                                lineChartData.datasets[0].data = datasets.power;
+                                console.log(lineChartData);
+
+                                console.log(chartJSON);
+
+
+                                var ctx = document.getElementById("canvas").getContext("2d");
+                                window.myLine = new Chart(ctx).Line(lineChartData, {
+                                    responsive: true
+                                });
                               })
                               .fail(function() {
-                                alert( "error" );
+                                console.log( "error" );
                               })
                               .always(function() {
-                                alert( "complete" );
+                                console.log( "complete" );
                               });
-                         
 
-                            var ctx = document.getElementById("canvas").getContext("2d");
-                            window.myLine = new Chart(ctx).Line(lineChartData, {
-                                responsive: true
-                            });
+                            
                         }
 
                         function showHideDataset(setname){
