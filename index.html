@@ -46,17 +46,18 @@
                     </div>
 
                     <script>
+                        /*
+                            Detect clicks across the top nav to change datasets
+                         */
                         $('.chartToggle').click(function(event) {
                             var clickTarget = $(this);
 
                             if ($.inArray('toggled', $(clickTarget)[0].classList) > -1) {
                                 // the datatype was already selected
                                 clickTarget.removeClass('toggled');
-                                console.log('turning off');
                             }else{
                                 // show this data type on the graph
                                 clickTarget.addClass('toggled');
-                                console.log('turning on');
                             }
 
                             console.log(clickTarget);
@@ -70,11 +71,14 @@
                         // show the power
                         // ** detect clicks on all 3 to make obj
 
+                        /*
+                            Obj to store our working data for the chart
+                         */
                         var lineChartData = {
                             labels: ["Label1", "Label2", "Label3", "Label4", "Label5",],
                             datasets: [
                                 {
-                                    label: "Power Data",
+                                    label: "demand",
                                     fillColor: "rgba(220,220,220,0.2)",
                                     strokeColor: "rgba(220,220,220,1)",
                                     pointColor: "rgba(220,220,220,1)",
@@ -87,13 +91,18 @@
 
                         };
 
-                        window.onload = function() {
+                        window.onload = initMap;
+
+                        function initMap(){
                             var ctx = document.getElementById("canvas").getContext("2d");
                             window.myLine = new Chart(ctx).Line(lineChartData, {
                                 responsive: true
                             });
                         }
 
+                        function showHideDataset(''){
+
+                        }
 
 
                     </script>
