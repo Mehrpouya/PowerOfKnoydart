@@ -63,6 +63,9 @@
                         // place to store our raw datas
                         var chartJSON;
 
+                        // cache all downloaded
+                        var datasets = {};
+
                         var randomScalingFactor = function() {
                             return Math.round(Math.random() * 100)
                         };
@@ -111,15 +114,14 @@
 
                                 // pull out a reasonable number of labels for the buttom (6)
                                 var nthValue = Math.floor(chartJSON.length / 6);
-
-                                var datasets = {}; 
+ 
 
                                 datasets.lastHour = {};
                                 datasets.lastDay = {};
                                 datasets.lastWeek = {};
                                 datasets.lastMonth = {}
 
-                                datasets.lastHour.power = new Array();
+                                datasets.lastHour.demand = new Array();
                                 datasets.lastHour.rainfall = new Array();
                                 datasets.lastHour.dam_lvl = new Array();
                                 datasets.lastHour.production = new Array();
@@ -128,7 +130,7 @@
 
                                 for (var i = 0; i < chartJSON.length; i++) {
 
-                                    datasets.lastHour.power.push(chartJSON[i].pow_act);
+                                    datasets.lastHour.demand.push(chartJSON[i].pow_act);
                                     datasets.lastHour.rainfall.push(chartJSON[i].rain);
                                     datasets.lastHour.dam_lvl.push(chartJSON[i].dam_lvl);
                                     datasets.lastHour.production.push(chartJSON[i].elster);
@@ -160,28 +162,43 @@
                             resetCanvas();
 
                             if(currentChart === "demand"){
-                                formatChartData(currentChart, false);
+                                formatChartData(false);
                                 graphObject = new Chart(ctx).Line(chartData, {
                                     responsive: true
                                 });
                             }else if (currentChart === "rainfall") {
-                                formatChartData(currentChart, true);
+                                formatChartData(true);
                                 graphObject = new Chart(ctx).LineBar(chartData, {
                                     responsive: true
                                 });
                             }else if(currentChart === "production"){
-                                formatChartData(currentChart, false);
+                                formatChartData(false);
                                 // console.log('Context before bar draw: ');
                                 // console.log(ctx);
                                 graphObject = new Chart(ctx).Bar(chartData, {
                                     responsive: true
                                 });
                             }
-                            
+                            console.log(chartData);
                         }
 
-                        function formatChartData(type, isLineBar) {
+                        function formatChartData(isLineBar) {
+                            if(!datasets[currentInterval]){
+                                console.log('will download this interval');
+                            }else{
+                                console.log('got this interval, loading data');
 
+                                
+                                if(currentChart === "rainfall"){
+                                    chartData.datasets[0] = newBlankDataSet('bar');
+                                    chartData.datasets[0].data = datasets[currentInterval]['dam_lvl'];
+                                    chartData.datasets[1] = newBlankDataSet('line');
+                                    chartData.datasets[1].data = datasets[currentInterval][currentChart];
+                                }else{
+                                    chartData.datasets[0] = newBlankDataSet('line');
+                                    chartData.datasets[0].data = datasets[currentInterval][currentChart];
+                                }
+                            }
                         }
 
                         function resetCanvas(){
@@ -190,6 +207,8 @@
                             graphObject.destroy();
                             graphObject = {};
                           }
+
+                          chartData.datasets = [];
                           
                           $('.graphContainer').append('<canvas id="graphCanvas"><canvas>');
                           ctx = document.getElementById("graphCanvas").getContext("2d");
@@ -198,6 +217,24 @@
                           ctx.canvas.clientHeight = $('.graphContainer')[0].clientHeight; // resize to parent width
                           ctx.canvas.clientWidth = $('.graphContainer')[0].clientWidth; // resize to parent width
                         }
+
+
+                        function newBlankDataSet(t){
+                            var obj = {
+                                    label: 'placeholder',
+                                    type: t,
+                                    fillColor: "rgba(220,220,220,0.2)",
+                                    strokeColor: "rgba(220,220,220,1)",
+                                    pointColor: "rgba(220,220,220,1)",
+                                    pointStrokeColor: "#fff",
+                                    pointHighlightFill: "#fff",
+                                    pointHighlightStroke: "rgba(220,220,220,1)",
+                                    data: [randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor()]
+                                };
+                            return obj;
+                        }
+
+
 
 
                     </script>
