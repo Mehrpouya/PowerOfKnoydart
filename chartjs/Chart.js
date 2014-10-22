@@ -740,6 +740,7 @@
 		getMaximumWidth = helpers.getMaximumWidth = function(domNode){
 			var container = domNode.parentNode;
 			// TODO = check cross browser stuff with this.
+			console.log(container);
 			return container.clientWidth;
 		},
 		getMaximumHeight = helpers.getMaximumHeight = function(domNode){

@@ -16,6 +16,7 @@
         <link href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">        
         <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
         <script src="chartjs/Chart.js"></script>
+        <script src="chartjs/dirty_linebar.js"></script>
 
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     </head>
@@ -41,20 +42,23 @@
             <div class="main wrapper clearfix">
 
                 <article>
-                    <div>
-                        <canvas id="canvas"></canvas>
+                    <div class="graphContainer">
+                        <canvas id="graphCanvas"></canvas>
                     </div>
 
                     <script>
-                        /*
-                            Detect clicks across the top nav to change datasets
-                         */
+                        // Detect clicks across the top nav to change datasets
                         $('.chartToggle').click(function(event) {
                             if(currentChart !== $(this)[0].id){
                                 currentChart = $(this)[0].id;
                                 console.log('Changing to '+$(this)[0].id);
+                                drawChart();
                             }
                         });
+
+                        // canvas drawing context
+                        var ctx;
+                        var graphObject;
 
                         // place to store our raw datas
                         var chartJSON;
@@ -65,14 +69,9 @@
 
                         // what are we showing now?
                         var currentChart = "demand";
+                        var currentInterval = "lastHour";
 
-                        // load the last hour stuff for all 3
-                        // show the power
-                        // ** detect clicks on all 3 to make obj
-
-                        /*
-                            Obj to store our working data for the chart
-                         */
+                        // Obj to store our working data for the chart
                         var chartData = {
                             labels: ["Label1", "Label2", "Label3", "Label4", "Label5", "Label6"],
                             datasets: [
@@ -107,8 +106,10 @@
                                     }
                                 }
 
+                                // discard all the excess json
                                 chartJSON = slimArray;
 
+                                // pull out a reasonable number of labels for the buttom (6)
                                 var nthValue = Math.floor(chartJSON.length / 6);
 
                                 var datasets = {}; 
@@ -138,15 +139,12 @@
                                 }
                                 chartData.labels = chartDateLabels;
                                 chartData.datasets[0].data = datasets.lastHour.power;
-                                console.log(chartData);
 
+                                console.log(chartData);
                                 console.log(chartJSON);
 
-
-                                var ctx = document.getElementById("canvas").getContext("2d");
-                                window.myLine = new Chart(ctx).Line(chartData, {
-                                    responsive: true
-                                });
+                                drawChart();
+                                
                               })
                               .fail(function() {
                                 console.log( "error" );
@@ -158,8 +156,47 @@
                             
                         }
 
-                        function showHideDataset(setname){
+                        function drawChart(){
+                            resetCanvas();
 
+                            if(currentChart === "demand"){
+                                formatChartData(currentChart, false);
+                                graphObject = new Chart(ctx).Line(chartData, {
+                                    responsive: true
+                                });
+                            }else if (currentChart === "rainfall") {
+                                formatChartData(currentChart, true);
+                                graphObject = new Chart(ctx).LineBar(chartData, {
+                                    responsive: true
+                                });
+                            }else if(currentChart === "production"){
+                                formatChartData(currentChart, false);
+                                // console.log('Context before bar draw: ');
+                                // console.log(ctx);
+                                graphObject = new Chart(ctx).Bar(chartData, {
+                                    responsive: true
+                                });
+                            }
+                            
+                        }
+
+                        function formatChartData(type, isLineBar) {
+
+                        }
+
+                        function resetCanvas(){
+                          $('#graphCanvas').remove();
+                          if(graphObject){
+                            graphObject.destroy();
+                            graphObject = {};
+                          }
+                          
+                          $('.graphContainer').append('<canvas id="graphCanvas"><canvas>');
+                          ctx = document.getElementById("graphCanvas").getContext("2d");
+                          // console.log('Context in resetCanvas: ');
+                          // console.log(ctx);
+                          ctx.canvas.clientHeight = $('.graphContainer')[0].clientHeight; // resize to parent width
+                          ctx.canvas.clientWidth = $('.graphContainer')[0].clientWidth; // resize to parent width
                         }
 
 
