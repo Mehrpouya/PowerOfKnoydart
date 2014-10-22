@@ -52,16 +52,20 @@
                         $(document).ready(function() {
                             // Detect clicks on time intervals
                             $('.btn').click(function(event) {
+                                if(isLoading){
+                                    return;
+                                }
+
                                 var label = $(this)[0].innerText;
                                 var intervalFullName = "";
 
                                 if (label.indexOf("Hour") >= 0) {
                                     intervalFullName = "lastHour";
-                                } else if (label.indexOf("Hour") >= 0) {
+                                } else if (label.indexOf("Day") >= 0) {
                                     intervalFullName = "lastDay";
-                                } else if (label.indexOf("Hour") >= 0) {
+                                } else if (label.indexOf("Week") >= 0) {
                                     intervalFullName = "lastWeek";
-                                } else if (label.indexOf("Hour") >= 0) {
+                                } else if (label.indexOf("Month") >= 0) {
                                     intervalFullName = "lastMonth";
                                 };
 
@@ -69,11 +73,15 @@
                                     return;
                                 }
 
-                                if(datasets[currentInterval]){
+                                currentInterval = intervalFullName;
+
+                                if(datasets[currentInterval].data){
                                     return;
                                 }
 
                                 console.log('loading in new interval set');
+                                resetCanvas();
+                                downloadDataset(intervalFullName);
                             });
 
                             // Detect clicks across the top nav to change datasets
@@ -142,7 +150,7 @@
                           shadow: false, // Whether to render a shadow
                           hwaccel: false, // Whether to use hardware acceleration
                           className: 'spinner', // The CSS class to assign to the spinner
-                          zIndex: 2e9, // The z-index (defaults to 2000000000)
+                          zIndex: 10000, // The z-index (defaults to 2000000000)
                           top: '50%', // Top position relative to parent
                           left: '50%' // Left position relative to parent
                         };    
@@ -292,6 +300,74 @@
                                     data: [randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor()]
                                 };
                             return obj;
+                        }
+
+                        function downloadDataset(type){
+                            spinner.spin(target);
+                            isLoading = true;
+
+                            var granularity = 3600;
+
+                            if(type === "lastHour"){
+                                granularity = 10;
+                            }
+
+                            var jqxhr = $.getJSON( "http://cyberscot.co.uk/powerofknoydart/getReading.php?type="+type)
+                              .done(function(d) {
+
+                                spinner.stop();
+                                isLoading = false;
+
+                                console.log(d);
+
+                                // chartJSON = d;
+
+                                // // cut down the json to every 10th second (most fine grained that we need)
+                                // var slimArray = new Array();
+                                // for (var i = 0; i < chartJSON.length; i++) {
+                                //     if (i % granularity == 0) {
+                                //         slimArray.push(chartJSON[i]);
+                                //     }
+                                // }
+
+                                // // discard all the excess json
+                                // chartJSON = slimArray;
+
+                                // // pull out a reasonable number of labels for the buttom (6)
+                                // var nthValue = Math.floor(chartJSON.length / 6);
+
+                                // datasets[type].demand = new Array();
+                                // datasets[type].rainfall = new Array();
+                                // datasets[type].dam_lvl = new Array();
+                                // datasets[type].production = new Array();
+
+                                // var chartDateLabels = new Array();
+
+                                // for (var i = 0; i < chartJSON.length; i++) {
+
+                                //     datasets[type].demand.push(chartJSON[i].pow_act);
+                                //     datasets[type].rainfall.push(chartJSON[i].rain);
+                                //     datasets[type].dam_lvl.push(chartJSON[i].dam_lvl);
+                                //     datasets[type].production.push(chartJSON[i].elster);
+
+                                //     if (i % nthValue == 0) {
+                                //         chartDateLabels.push(chartJSON[i].datetime);
+                                //     }
+                                // }
+                                // chartData.labels = chartDateLabels;
+                                // chartData.datasets[0].data = datasets[type].power;
+
+                                // console.log(datasets[type]);
+                                
+                              })
+                              .fail(function() {
+                                console.log( "error" );
+                                spinner.stop();
+                                isLoading = false;
+                              })
+                              .always(function() {
+                                // console.log( "complete" );
+                              });
                         }
 
 
