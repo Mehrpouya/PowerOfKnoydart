@@ -48,18 +48,47 @@
                     </div>
 
                     <script>
-                        // Detect clicks across the top nav to change datasets
-                        $('.chartToggle').click(function(event) {
+                        
+                        $(document).ready(function() {
+                            // Detect clicks on time intervals
+                            $('.btn').click(function(event) {
+                                var label = $(this)[0].innerText;
+                                var intervalFullName = "";
 
-                            if(isLoading){
-                                return;
-                            }
+                                if (label.indexOf("Hour") >= 0) {
+                                    intervalFullName = "lastHour";
+                                } else if (label.indexOf("Hour") >= 0) {
+                                    intervalFullName = "lastDay";
+                                } else if (label.indexOf("Hour") >= 0) {
+                                    intervalFullName = "lastWeek";
+                                } else if (label.indexOf("Hour") >= 0) {
+                                    intervalFullName = "lastMonth";
+                                };
 
-                            if(currentChart !== $(this)[0].id){
-                                currentChart = $(this)[0].id;
-                                console.log('Changing to '+$(this)[0].id);
-                                drawChart();
-                            }
+                                if(intervalFullName === currentInterval){
+                                    return;
+                                }
+
+                                if(datasets[currentInterval]){
+                                    return;
+                                }
+
+                                console.log('loading in new interval set');
+                            });
+
+                            // Detect clicks across the top nav to change datasets
+                            $('.chartToggle').click(function(event) {
+
+                                if(isLoading){
+                                    return;
+                                }
+
+                                if(currentChart !== $(this)[0].id){
+                                    currentChart = $(this)[0].id;
+                                    console.log('Changing to '+$(this)[0].id);
+                                    drawChart();
+                                }
+                            });
                         });
 
                         // canvas drawing context
@@ -179,9 +208,6 @@
                                 chartData.labels = chartDateLabels;
                                 chartData.datasets[0].data = datasets.lastHour.power;
 
-                                console.log(chartData);
-                                console.log(chartJSON);
-
                                 drawChart();
                                 
                               })
@@ -222,22 +248,17 @@
                         }
 
                         function formatChartData(isLineBar) {
-                            if(!datasets[currentInterval]){
-                                console.log('will download this interval');
+                            
+                            if(currentChart === "rainfall"){
+                                chartData.datasets[0] = newBlankDataSet('bar');
+                                chartData.datasets[0].data = datasets[currentInterval]['dam_lvl'];
+                                chartData.datasets[1] = newBlankDataSet('line');
+                                chartData.datasets[1].data = datasets[currentInterval][currentChart];
                             }else{
-                                console.log('got this interval, loading data');
-
-                                
-                                if(currentChart === "rainfall"){
-                                    chartData.datasets[0] = newBlankDataSet('bar');
-                                    chartData.datasets[0].data = datasets[currentInterval]['dam_lvl'];
-                                    chartData.datasets[1] = newBlankDataSet('line');
-                                    chartData.datasets[1].data = datasets[currentInterval][currentChart];
-                                }else{
-                                    chartData.datasets[0] = newBlankDataSet('line');
-                                    chartData.datasets[0].data = datasets[currentInterval][currentChart];
-                                }
+                                chartData.datasets[0] = newBlankDataSet('line');
+                                chartData.datasets[0].data = datasets[currentInterval][currentChart];
                             }
+                            
                         }
 
                         function resetCanvas(){
@@ -281,13 +302,13 @@
                     <section>
                         <a class="btn btn-large" href="#" style="text-align: center; color: #000;">
                             <i class="icon-time icon-2x pull-left" style="color: red;"></i> <br>Hour</a>
-                            <a class="btn btn-large" href="#" style="text-align: center; color: #000;">
+                        <a class="btn btn-large" href="#" style="text-align: center; color: #000;">
                             <i class="icon-sun icon-2x pull-left" style="color: red;"></i> <br>Day</a>
                         <a class="btn btn-large" href="#" style="text-align: center; color: #000;">
                             <i class="icon-time icon-2x pull-left" style="color: red;"></i> <br>Week</a>
                         <a class="btn btn-large" href="#" style="text-align: center; color: #000;">
                             <i class="icon-calendar icon-2x pull-left" style="color: red;"></i> <br>Month</a>
-<!--                        <button>Hour</button>
+<!--                     <button>Hour</button>
                         <button>Day</button>
                         <button>Week</button>
                         <button>Month</button>-->
