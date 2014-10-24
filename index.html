@@ -75,7 +75,12 @@
 
                                 currentInterval = intervalFullName;
 
-                                if(datasets[currentInterval].data){
+                                console.log('checking for cached '+currentInterval);
+                                
+                                if(datasets[currentInterval][currentChart]){
+                                    console.log('Drawing out from:');
+                                    console.log(chartData);
+                                    drawChart();
                                     return;
                                 }
 
@@ -104,7 +109,7 @@
                         var graphObject;
 
                         // place to store our raw datas
-                        var chartJSON;
+                        var rawJSON;
 
                         // cache all downloaded
                         var datasets = {};
@@ -165,29 +170,27 @@
 
                         function initGraph(){
 
-                            
-
                             var jqxhr = $.getJSON( "http://cyberscot.co.uk/powerofknoydart/getReading.php?type=lastHour")
                               .done(function(d) {
 
                                 spinner.stop();
                                 isLoading = false;
 
-                                chartJSON = d;
+                                rawJSON = d;
 
                                 // cut down the json to every 10th second (most fine grained that we need)
                                 var slimArray = new Array();
-                                for (var i = 0; i < chartJSON.length; i++) {
+                                for (var i = 0; i < rawJSON.length; i++) {
                                     if (i % 10 == 0) {
-                                        slimArray.push(chartJSON[i]);
+                                        slimArray.push(rawJSON[i]);
                                     }
                                 }
 
                                 // discard all the excess json
-                                chartJSON = slimArray;
+                                rawJSON = slimArray;
 
                                 // pull out a reasonable number of labels for the buttom (6)
-                                var nthValue = Math.floor(chartJSON.length / 6);
+                                var nthValue = Math.floor(rawJSON.length / 6);
  
 
                                 datasets.lastHour = {};
@@ -202,20 +205,18 @@
 
                                 var chartDateLabels = new Array();
 
-                                for (var i = 0; i < chartJSON.length; i++) {
+                                for (var i = 0; i < rawJSON.length; i++) {
 
-                                    datasets.lastHour.demand.push(chartJSON[i].pow_act);
-                                    datasets.lastHour.rainfall.push(chartJSON[i].rain);
-                                    datasets.lastHour.dam_lvl.push(chartJSON[i].dam_lvl);
-                                    datasets.lastHour.production.push(chartJSON[i].elster);
+                                    datasets.lastHour.demand.push(rawJSON[i].pow_act);
+                                    datasets.lastHour.rainfall.push(rawJSON[i].rain);
+                                    datasets.lastHour.dam_lvl.push(rawJSON[i].dam_lvl);
+                                    datasets.lastHour.production.push(rawJSON[i].elster);
 
-                                    if (i % nthValue == 0) {
-                                        chartDateLabels.push(chartJSON[i].datetime);
-                                    }
                                 }
-                                chartData.labels = chartDateLabels;
+                                
                                 chartData.datasets[0].data = datasets.lastHour.power;
 
+                                calculateScaleX();
                                 drawChart();
                                 
                               })
@@ -252,7 +253,6 @@
                                     responsive: true
                                 });
                             }
-                            console.log(chartData);
                         }
 
                         function formatChartData(isLineBar) {
@@ -273,7 +273,6 @@
                           $('#graphCanvas').remove();
                           if(graphObject){
                             graphObject.destroy();
-                            graphObject = {};
                           }
 
                           chartData.datasets = [];
@@ -302,6 +301,11 @@
                             return obj;
                         }
 
+                        function calculateScaleX(){
+                            chartData.labels = chartDateLabels;
+
+                        }
+
                         function downloadDataset(type){
                             spinner.spin(target);
                             isLoading = true;
@@ -318,46 +322,51 @@
                                 spinner.stop();
                                 isLoading = false;
 
-                                console.log(d);
-
-                                // chartJSON = d;
+                                rawJSON = d;
 
                                 // // cut down the json to every 10th second (most fine grained that we need)
                                 // var slimArray = new Array();
-                                // for (var i = 0; i < chartJSON.length; i++) {
+                                // for (var i = 0; i < rawJSON.length; i++) {
                                 //     if (i % granularity == 0) {
-                                //         slimArray.push(chartJSON[i]);
+                                //         slimArray.push(rawJSON[i]);
                                 //     }
                                 // }
 
                                 // // discard all the excess json
-                                // chartJSON = slimArray;
+                                // rawJSON = slimArray;
 
-                                // // pull out a reasonable number of labels for the buttom (6)
-                                // var nthValue = Math.floor(chartJSON.length / 6);
+                                // pull out a reasonable number of labels for the buttom (6)
+                                var nthValue = Math.floor(rawJSON.length / 6);
 
-                                // datasets[type].demand = new Array();
-                                // datasets[type].rainfall = new Array();
-                                // datasets[type].dam_lvl = new Array();
-                                // datasets[type].production = new Array();
+                                datasets[type].demand = new Array();
+                                datasets[type].rainfall = new Array();
+                                datasets[type].dam_lvl = new Array();
+                                datasets[type].production = new Array();
 
-                                // var chartDateLabels = new Array();
+                                var chartDateLabels = new Array();
 
-                                // for (var i = 0; i < chartJSON.length; i++) {
+                                for (var i = 0; i < rawJSON.length; i++) {
 
-                                //     datasets[type].demand.push(chartJSON[i].pow_act);
-                                //     datasets[type].rainfall.push(chartJSON[i].rain);
-                                //     datasets[type].dam_lvl.push(chartJSON[i].dam_lvl);
-                                //     datasets[type].production.push(chartJSON[i].elster);
+                                    datasets[type].demand.push(rawJSON[i].pow_act);
+                                    datasets[type].rainfall.push(rawJSON[i].rain);
+                                    datasets[type].dam_lvl.push(rawJSON[i].dam_lvl);
+                                    datasets[type].production.push(rawJSON[i].elster);
 
-                                //     if (i % nthValue == 0) {
-                                //         chartDateLabels.push(chartJSON[i].datetime);
-                                //     }
-                                // }
-                                // chartData.labels = chartDateLabels;
-                                // chartData.datasets[0].data = datasets[type].power;
+                                    if (i % nthValue == 0) {
+                                        chartDateLabels.push(rawJSON[i].datetime);
+                                    }
+                                }
+                                chartData.labels = chartDateLabels;
 
-                                // console.log(datasets[type]);
+                                var dataType = "bar";
+                                if(currentChart === "demand"){
+                                    dataType = "line";
+                                }
+
+                                chartData.datasets[0] = newBlankDataSet(dataType);
+                                chartData.datasets[0].data = datasets[type][currentChart];
+
+                                drawChart();
                                 
                               })
                               .fail(function() {
