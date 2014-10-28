@@ -184,8 +184,10 @@
                                 });
                             }else if (currentChart === "rainfall") {
                                 formatChartData(true);
-                                graphObject = new Chart(ctx).LineBar(chartData, {
-                                    responsive: true
+                                graphObject = new Chart(ctx).MultiAxisLine(chartData, {
+                                    responsive: true,
+                                    drawScale: [0,1],
+                                    drawScaleStroke: [0]
                                 });
                             }else if(currentChart === "production"){
                                 formatChartData(false);
@@ -200,12 +202,12 @@
                         function formatChartData(isLineBar) {
                             
                             if(currentChart === "rainfall"){
-                                chartData.datasets[0] = newBlankDataSet('bar');
+                                chartData.datasets[0] = newBlankDataSet(0);
                                 chartData.datasets[0].data = datasets[currentInterval]['dam_lvl'];
-                                chartData.datasets[1] = newBlankDataSet('line');
+                                chartData.datasets[1] = newBlankDataSet(1);
                                 chartData.datasets[1].data = datasets[currentInterval][currentChart];
                             }else{
-                                chartData.datasets[0] = newBlankDataSet('line');
+                                chartData.datasets[0] = newBlankDataSet(0);
                                 chartData.datasets[0].data = datasets[currentInterval][currentChart];
                             }
                             
@@ -228,10 +230,10 @@
                         }
 
 
-                        function newBlankDataSet(t){
+                        function newBlankDataSet(axis_num){
                             var obj = {
                                     label: 'placeholder',
-                                    type: t,
+                                    axis: axis_num,
                                     fillColor: "rgba(220,220,220,0.2)",
                                     strokeColor: "rgba(220,220,220,1)",
                                     pointColor: "rgba(220,220,220,1)",
@@ -312,11 +314,6 @@
                                 }
 
                                 chartData.labels = datasets[interval].labels;
-
-                                var dataType = "bar";
-                                if(currentChart === "demand"){
-                                    dataType = "line";
-                                }
 
                                 drawChart();
 

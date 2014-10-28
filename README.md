@@ -9,4 +9,9 @@ For more information please go to
 
 http://lifeoffthegrid.net/
 
+TODO:
+===============
 
+UI improvements (ticker, denote current interval, etc)
+Hook up to live including auto update
+PHP to handle time increments instead of JS (10 sec, 1hr, 1hr, 1hr)
