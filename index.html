@@ -16,7 +16,8 @@
         <link href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">        
         <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
         <script src="chartjs/Chart.js"></script>
-        <script src="chartjs/dirty_linebar.js"></script>
+        <!--<script src="chartjs/dirty_linebar.js"></script>-->
+        <script src="chartjs/linebar_hack.js"></script>
         <script src="js/spin.js"></script>
         <script src="js/vis.js"></script>
 
@@ -89,8 +90,6 @@
                                 console.log('checking for cached '+currentInterval);
                                 
                                 if(datasets[currentInterval]){
-                                    console.log('Drawing out from:');
-                                    console.log(chartData);
                                     chartData.labels = datasets[currentInterval].labels;
                                     drawChart();
                                     return;
@@ -180,7 +179,6 @@
 
                             if(currentChart === "demand"){
                                 formatChartData(false);
-                                console.log(chartData);
                                 graphObject = new Chart(ctx).Line(chartData, {
                                     responsive: true
                                 });
@@ -334,6 +332,10 @@
                               .always(function() {
                                 // console.log( "complete" );
                               });
+                        }
+
+                        function refreshChart(){
+
                         }
 
 
