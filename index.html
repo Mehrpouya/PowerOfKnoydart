@@ -66,8 +66,9 @@
                                     return;
                                 }
 
-                                var label = $(this)[0].innerText;
+                                var label = $(this)[0].text;
                                 var intervalFullName = "";
+
 
                                 if (label.indexOf("Hour") >= 0) {
                                     intervalFullName = "lastHour";
