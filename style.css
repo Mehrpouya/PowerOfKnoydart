@@ -165,6 +165,40 @@ header h1{
   text-align: center;
 }
 
+/* GRAPH */
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path {
+  display: none;
+}
+
+.x.axis {
+  font-family: sans-serif;
+  font-size: 11px;
+}
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+.overlay {
+  fill: none;
+  pointer-events: all;
+}
+
+.focus circle {
+  fill: none;
+  stroke: steelblue;
+}
+
 /* NAVIGATION */
 
 nav{
