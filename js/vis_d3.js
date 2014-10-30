@@ -340,6 +340,9 @@ $('.chartToggle').click(function(event) {
       return;
     }
 
+    $('.chartToggle').removeClass('chartSelected');
+    $(this).addClass('chartSelected');
+
     console.log('click on '+buttonClicked);
 
     currentChartType = chartTypes[buttonClicked];

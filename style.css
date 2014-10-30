@@ -156,14 +156,30 @@ header h1{
   letter-spacing: 0.05em;
 }
 
+.chartToggle{
+  color:#ccc;
+}
+
 .chartSelected{
+  color:#fff;
   font-weight: bolder;
-  border-bottom: 1px #fff;
+  text-decoration: underline;
+}
+
+button{
+  color:#777;
+}
+
+.buttonSelected{
+  font-weight: bold;
+  color:#000;
 }
 
 .center-contents{
   text-align: center;
 }
+
+
 
 /* GRAPH */
 
