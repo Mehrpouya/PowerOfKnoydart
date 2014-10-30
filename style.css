@@ -190,9 +190,6 @@ button{
   shape-rendering: crispEdges;
 }
 
-.x.axis path {
-  display: none;
-}
 
 .x.axis {
   font-family: sans-serif;
