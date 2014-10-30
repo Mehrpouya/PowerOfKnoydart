@@ -1,3 +1,12 @@
+$(document).ready(function() {
+    target = document.getElementById('graphContainer');
+    spinner = new Spinner(opts).spin(target);
+    spinner.stop();
+
+    initd3(currentChartType, currentChartInterval);
+});
+
+
 /* SPINNER */
 
 var opts = {
@@ -19,17 +28,10 @@ var opts = {
   left: '50%' // Left position relative to parent
 };
 
-var target;
-var spinner;
+var target, spinner, isLoading;
 
-$(document).ready(function() {
-    target = document.getElementById('graphContainer');
-    spinner = new Spinner(opts).spin(target);
 
-    initd3(chartTypes.demand, chartIntervals.lastHour);
-});
-
-/* END SPINNER */
+/* END SPINNER *
 
 /* CHART CONSTANTS */
 
@@ -42,14 +44,22 @@ var chartContainer = d3.select("#graphContainer");
 
 var chartTypes = {
   demand: {
+    name: "demand",
     lines: ["pow_act"],
     yBounds: "pow_act",
     ylabel: "Power Demanded"
   },
   rainfall: {
+    name: "rainfall",
     lines: ["dam_lvl", "rain"],
     yBounds: "dam_lvl",
-    ylabel: "Dam Level vs Rainfall"
+    ylabel: "Dam Level + Rainfall"
+  },
+  production: {
+    name: "production",
+    lines: ["elster"],
+    yBounds: "elster",
+    ylabel: "Power Production"
   }
 };
 
@@ -76,6 +86,11 @@ var chartIntervals = {
   }
 };
 
+var chartDataCache = {};
+
+var currentChartType = chartTypes.demand;
+var currentChartInterval = chartIntervals.lastHour;
+
 /* END CHART CONSTANTS */
 
 function cleard3() {
@@ -86,7 +101,11 @@ function cleard3() {
 
 function initd3(dataType, interval){
 
-  var margin = {top: 5, right: 20, bottom: 40, left: 50},
+  console.log('init with type: '+dataType.name+' and interval '+interval.name);
+
+  isLoading = true;
+
+  var margin = {top:50, right: 20, bottom: 40, left: 50},
       width = 600 - margin.left - margin.right,
       height = 350 - margin.top - margin.bottom;
 
@@ -123,7 +142,6 @@ function initd3(dataType, interval){
 
   if(!d3.select('svg')[0][0])
   {
-    console.log('nae svg');
 
     svg = chartContainer.append("svg")
       .attr("width", width + margin.left + margin.right)
@@ -131,17 +149,74 @@ function initd3(dataType, interval){
     .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
   }else{
-    console.log('using old svg');
 
     svg = d3.select('svg')
     .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
   }
 
-  d3.json(url+interval.name, function(error, data) {
+  if( chartDataCache[currentChartInterval.name] !== undefined )
+  {
+    console.log(chartDataCache);
+    console.log('Delving into the cache');
 
+    isLoading = false;
+
+    workingData = chartDataCache[currentChartInterval.name];
+
+    // figure out the smallest where we have 2 sets
+
+    // use the extent helper function to find the bounds of each axis
+    x.domain(d3.extent(workingData, function(d) { return d.datetime; }));
+
+    var yMax = d3.max(workingData, function(d) { return d[dataType.yBounds]; });
+    y.domain([0, parseInt(yMax*1.2, 10)]);
+
+    svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis)
+        .selectAll("text")
+            .style("text-anchor", "end")
+            .attr("dx", "-.8em")
+            .attr("dy", ".15em")
+            .attr("transform", function(d) {
+                return "rotate(-25)";
+                });
+
+    svg.append("g")
+        .attr("class", "y axis")
+        .call(yAxis)
+      .append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 6)
+        .attr("dy", ".71em")
+        .style("text-anchor", "end")
+        .text(dataType.ylabel);
+
+
+    for(i=0; i<svgLines.length; i++)
+    {
+
+      svg.append("path")
+        .datum(workingData)
+        .attr("class", "line")
+        .attr("d", svgLines[i]);
+    }
+  }
+  else
+  {
+    console.log('Downloading new data');
+    spinner.spin(target);
+    isLoading = true;
+
+    d3.json(url+interval.name, function(error, data) {
+
+    // download completion housekeeping
+    isLoading = false;
     spinner.stop();
 
+    // strip out garbage we dont want
     var count = 0;
 
     data.forEach(function(d) {
@@ -169,23 +244,26 @@ function initd3(dataType, interval){
       }
     });
 
-
+    // no need to download next time yo!
+    chartDataCache[currentChartInterval.name] = workingData;
 
     // use the extent helper function to find the bounds of each axis
     x.domain(d3.extent(workingData, function(d) { return d.datetime; }));
-    y.domain([0, d3.max(workingData, function(d) { return d[dataType.yBounds]; })]);
+
+    var yMax = d3.max(workingData, function(d) { return d[dataType.yBounds]; });
+    y.domain([0, parseInt(yMax+yMax*0.25, 10)]);
 
     svg.append("g")
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
         .call(xAxis)
-        .selectAll("text")  
+        .selectAll("text")
             .style("text-anchor", "end")
             .attr("dx", "-.8em")
             .attr("dy", ".15em")
             .attr("transform", function(d) {
-                return "rotate(-25)" 
-                });;
+                return "rotate(-25)";
+                });
 
     svg.append("g")
         .attr("class", "y axis")
@@ -207,6 +285,10 @@ function initd3(dataType, interval){
         .attr("d", svgLines[i]);
     }
   });
+  }
+
+
+  
 }
 
 function createLine(fromData, x, y){
@@ -221,3 +303,46 @@ function createLine(fromData, x, y){
       });
     return line;
 }
+
+/* BUTTON EVENTS */
+
+$('button').click(function(event) {
+      if(isLoading){
+          return;
+      }
+
+      var buttonClicked = $(this)[0].id;
+
+      if( currentChartInterval.name === buttonClicked )
+      {
+        return;
+      }
+
+      console.log('click on '+buttonClicked);
+
+      currentChartInterval = chartIntervals[buttonClicked];
+      cleard3();
+      initd3(currentChartType, currentChartInterval);
+
+    });
+
+// Detect clicks across the top nav to change datasets
+$('.chartToggle').click(function(event) {
+
+    if(isLoading){
+        return;
+    }
+
+    var buttonClicked = $(this)[0].id;
+
+    if( currentChartType.name === buttonClicked )
+    {
+      return;
+    }
+
+    console.log('click on '+buttonClicked);
+
+    currentChartType = chartTypes[buttonClicked];
+    cleard3();
+    initd3(currentChartType, currentChartInterval);
+});
