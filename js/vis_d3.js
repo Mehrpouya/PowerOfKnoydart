@@ -46,18 +46,21 @@ var chartTypes = {
   demand: {
     name: "demand",
     lines: ["pow_act"],
+    bars: [],
     yBounds: "pow_act",
     ylabel: "Power Demanded"
   },
   rainfall: {
     name: "rainfall",
     lines: ["dam_lvl", "rain"],
+    bars: [],
     yBounds: "dam_lvl",
     ylabel: "Dam Level + Rainfall"
   },
   production: {
     name: "production",
     lines: ["elster"],
+    bars: [],
     yBounds: "elster",
     ylabel: "Power Production"
   }
@@ -105,9 +108,11 @@ function initd3(dataType, interval){
 
   isLoading = true;
 
+  var parentWidth = $('.graphContainer').width();
+
   var margin = {top:50, right: 20, bottom: 40, left: 50},
-      width = 600 - margin.left - margin.right,
-      height = 350 - margin.top - margin.bottom;
+      width = parentWidth - margin.left - margin.right,
+      height = ((parentWidth/2)+50) - margin.top - margin.bottom;
 
   var parseDate = d3.time.format("%Y-%m-%d %X").parse;
 
@@ -137,6 +142,7 @@ function initd3(dataType, interval){
     svgLines.push(aLine);
   }
 
+  
   var svg;
 
 
@@ -203,6 +209,21 @@ function initd3(dataType, interval){
         .attr("class", "line")
         .attr("d", svgLines[i]);
     }
+
+    /*
+    if(dataType.bars.length > 0)
+    {
+      svg.selectAll("bar")
+        .data(workingData)
+      .enter().append("rect")
+        .style("fill", "steelblue")
+        .attr("x", function(d) { return x(d.datetime); })
+        .attr("width", x.rangeBand())
+        .attr("y", function(d) { return y(d[dataType.bars[0]]); })
+        .attr("height", function(d) { return height - y(d[dataType.bars[0]]); });
+    }
+
+    */
   }
   else
   {
@@ -239,6 +260,11 @@ function initd3(dataType, interval){
           {
             d[dataType.lines[i]] = +parseFloat(d[dataType.lines[i]]);
           }
+        }
+
+        for (i=0; i<dataType.bars.length; i++)
+        {
+          d[dataType.bars[i]] = +parseFloat(d[dataType.bars[i]]);
         }
 
       }
@@ -284,6 +310,21 @@ function initd3(dataType, interval){
         .attr("class", "line")
         .attr("d", svgLines[i]);
     }
+
+    /*
+    if(dataType.bars.length > 0)
+    {
+      svg.selectAll("bar")
+        .data(workingData)
+      .enter().append("rect")
+        .style("fill", "steelblue")
+        .attr("x", function(d) { return x(d.datetime); })
+        .attr("width", x.rangeBand())
+        .attr("y", function(d) { return y(d[dataType.bars[0]]); })
+        .attr("height", function(d) { return height - y(d[dataType.bars[0]]); });
+    }
+    */
+
   });
   }
 
@@ -317,6 +358,9 @@ $('button').click(function(event) {
       {
         return;
       }
+
+      $('button').removeClass('buttonSelected');
+      $(this).addClass('buttonSelected');
 
       console.log('click on '+buttonClicked);
 
