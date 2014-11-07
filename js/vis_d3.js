@@ -1,9 +1,9 @@
 $(document).ready(function() {
-    target = document.getElementById('graphContainer');
-    spinner = new Spinner(opts).spin(target);
-    spinner.stop();
+  target = document.getElementById('graphContainer');
+  spinner = new Spinner(opts).spin(target);
+  spinner.stop();
 
-    initd3(currentChartType, currentChartInterval);
+  initd3(currentChartType, currentChartInterval);
 });
 
 
@@ -111,25 +111,26 @@ function initd3(dataType, interval){
   var parentWidth = $('.graphContainer').width();
 
   var margin = {top:50, right: 20, bottom: 40, left: 50},
-      width = parentWidth - margin.left - margin.right,
-      height = ((parentWidth/2)+50) - margin.top - margin.bottom;
+  width = parentWidth - margin.left - margin.right,
+  height = ((parentWidth/2)+50) - margin.top - margin.bottom;
 
   var parseDate = d3.time.format("%Y-%m-%d %X").parse;
+  var bisectDate = d3.bisector(function(d) { return d.datetime; }).left;
 
   var x = d3.time.scale()
-      .range([0, width]);
+  .range([0, width]);
 
   var y = d3.scale.linear()
-      .range([height, 0]);
+  .range([height, 0]);
 
   var xAxis = d3.svg.axis()
-      .scale(x)
-      .orient("bottom")
-      .tickFormat(d3.time.format(interval.xFormat));
+  .scale(x)
+  .orient("bottom")
+  .tickFormat(d3.time.format(interval.xFormat));
 
   var yAxis = d3.svg.axis()
-      .scale(y)
-      .orient("left");
+  .scale(y)
+  .orient("left");
 
   var svgLines = [];
 
@@ -150,15 +151,15 @@ function initd3(dataType, interval){
   {
 
     svg = chartContainer.append("svg")
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
     .append("g")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
   }else{
 
     svg = d3.select('svg')
     .append("g")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
   }
 
   if( chartDataCache[currentChartInterval.name] !== undefined )
@@ -179,36 +180,60 @@ function initd3(dataType, interval){
     y.domain([0, parseInt(yMax*1.2, 10)]);
 
     svg.append("g")
-        .attr("class", "x axis")
-        .attr("transform", "translate(0," + height + ")")
-        .call(xAxis)
-        .selectAll("text")
-            .style("text-anchor", "end")
-            .attr("dx", "-.8em")
-            .attr("dy", ".15em")
-            .attr("transform", function(d) {
-                return "rotate(-25)";
-                });
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(xAxis)
+    .selectAll("text")
+    .style("text-anchor", "end")
+    .attr("dx", "-.8em")
+    .attr("dy", ".15em")
+    .attr("transform", function(d) {
+      return "rotate(-25)";
+    });
 
     svg.append("g")
-        .attr("class", "y axis")
-        .call(yAxis)
-      .append("text")
-        .attr("transform", "rotate(-90)")
-        .attr("y", 6)
-        .attr("dy", ".71em")
-        .style("text-anchor", "end")
-        .text(dataType.ylabel);
+    .attr("class", "y axis")
+    .call(yAxis)
+    .append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 6)
+    .attr("dy", ".71em")
+    .style("text-anchor", "end")
+    .text(dataType.ylabel);
+
+
 
 
     for(i=0; i<svgLines.length; i++)
     {
 
       svg.append("path")
-        .datum(workingData)
-        .attr("class", "line")
-        .attr("d", svgLines[i]);
+      .datum(workingData)
+      .attr("class", "line")
+      .attr("d", svgLines[i]);
     }
+
+
+
+    // var focus = svg.append("g")
+    // .attr("class", "focus")
+    // .style("display", "none");
+
+    // focus.append("circle")
+    // .attr("r", 4.5);
+
+    // focus.append("text")
+    // .attr("x", 9)
+    // .attr("dy", ".35em");
+
+    // svg.append("rect")
+    // .attr("class", "overlay")
+    // .attr("width", width)
+    // .attr("height", height)
+    // .on("mouseover", function() { focus.style("display", null); })
+    // .on("mouseout", function() { focus.style("display", "none"); })
+    // .on("mousemove", mousemove);
+
 
     /*
     if(dataType.bars.length > 0)
@@ -280,35 +305,35 @@ function initd3(dataType, interval){
     y.domain([0, parseInt(yMax+yMax*0.25, 10)]);
 
     svg.append("g")
-        .attr("class", "x axis")
-        .attr("transform", "translate(0," + height + ")")
-        .call(xAxis)
-        .selectAll("text")
-            .style("text-anchor", "end")
-            .attr("dx", "-.8em")
-            .attr("dy", ".15em")
-            .attr("transform", function(d) {
-                return "rotate(-25)";
-                });
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(xAxis)
+    .selectAll("text")
+    .style("text-anchor", "end")
+    .attr("dx", "-.8em")
+    .attr("dy", ".15em")
+    .attr("transform", function(d) {
+      return "rotate(-25)";
+    });
 
     svg.append("g")
-        .attr("class", "y axis")
-        .call(yAxis)
-      .append("text")
-        .attr("transform", "rotate(-90)")
-        .attr("y", 6)
-        .attr("dy", ".71em")
-        .style("text-anchor", "end")
-        .text(dataType.ylabel);
+    .attr("class", "y axis")
+    .call(yAxis)
+    .append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 6)
+    .attr("dy", ".71em")
+    .style("text-anchor", "end")
+    .text(dataType.ylabel);
 
 
     for(var i=0; i<svgLines.length; i++)
     {
 
       svg.append("path")
-        .datum(workingData)
-        .attr("class", "line")
-        .attr("d", svgLines[i]);
+      .datum(workingData)
+      .attr("class", "line")
+      .attr("d", svgLines[i]);
     }
 
     /*
@@ -324,72 +349,111 @@ function initd3(dataType, interval){
         .attr("height", function(d) { return height - y(d[dataType.bars[0]]); });
     }
     */
+   
 
   });
-  }
+}
+
+    var focus = svg.append("g")
+        .attr("class", "focus")
+        .style("display", "none");
+
+        focus.append("circle")
+        .attr("r", 4.5);
+
+        focus.append("text")
+        .attr("x", 9)
+        .attr("dy", ".35em");
+
+        svg.append("rect")
+        .attr("class", "overlay")
+        .attr("width", width)
+        .attr("height", height)
+        .on("mouseover", function() { focus.style("display", null); })
+        .on("mouseout", function() { focus.style("display", "none"); })
+        .on("mousemove", mousemove);
+
+    function mousemove() {
+        var x0 = x.invert(d3.mouse(this)[0]),
+            i = bisectDate(workingData, x0, 1),
+            d0 = workingData[i - 1],
+            d1 = workingData[i],
+            d = x0 - d0.datetime > d1.datetime - x0 ? d1 : d0;
+        focus.attr("transform", "translate(" + x(d.datetime) + "," + y(d[dataType.lines[0]]) + ")");
+        focus.select("text").text(d[dataType.lines[0]]);
+    }
+
+}
 
 
-  
+
+function chartAutoUpdate()
+{
+  // ajax the latest .php
+  // add to workingData for this and all cached
+  // cleard3
+  // 
 }
 
 function createLine(fromData, x, y){
   var line = d3.svg.line()
-    .x(function(d)
-      {
-        return x(d.datetime);
-      })
-    .y(function(d)
-      {
-        return y(d[fromData]);
-      });
-    return line;
+  .x(function(d)
+  {
+    return x(d.datetime);
+  })
+  .y(function(d)
+  {
+    return y(d[fromData]);
+  });
+  return line;
 }
+
 
 /* BUTTON EVENTS */
 
 $('button').click(function(event) {
-      if(isLoading){
-          return;
-      }
+  if(isLoading){
+    return;
+  }
 
-      var buttonClicked = $(this)[0].id;
+  var buttonClicked = $(this)[0].id;
 
-      if( currentChartInterval.name === buttonClicked )
-      {
-        return;
-      }
+  if( currentChartInterval.name === buttonClicked )
+  {
+    return;
+  }
 
-      $('button').removeClass('buttonSelected');
-      $(this).addClass('buttonSelected');
+  $('button').removeClass('buttonSelected');
+  $(this).addClass('buttonSelected');
 
-      console.log('click on '+buttonClicked);
+  console.log('click on '+buttonClicked);
 
-      currentChartInterval = chartIntervals[buttonClicked];
-      cleard3();
-      initd3(currentChartType, currentChartInterval);
+  currentChartInterval = chartIntervals[buttonClicked];
+  cleard3();
+  initd3(currentChartType, currentChartInterval);
 
-    });
+});
 
 // Detect clicks across the top nav to change datasets
 $('.chartToggle').click(function(event) {
 
-    if(isLoading){
-        return;
-    }
+  if(isLoading){
+    return;
+  }
 
-    var buttonClicked = $(this)[0].id;
+  var buttonClicked = $(this)[0].id;
 
-    if( currentChartType.name === buttonClicked )
-    {
-      return;
-    }
+  if( currentChartType.name === buttonClicked )
+  {
+    return;
+  }
 
-    $('.chartToggle').removeClass('chartSelected');
-    $(this).addClass('chartSelected');
+  $('.chartToggle').removeClass('chartSelected');
+  $(this).addClass('chartSelected');
 
-    console.log('click on '+buttonClicked);
+  console.log('click on '+buttonClicked);
 
-    currentChartType = chartTypes[buttonClicked];
-    cleard3();
-    initd3(currentChartType, currentChartInterval);
+  currentChartType = chartTypes[buttonClicked];
+  cleard3();
+  initd3(currentChartType, currentChartInterval);
 });
