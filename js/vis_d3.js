@@ -374,6 +374,10 @@ function initd3(dataType, interval){
         .on("mousemove", mousemove);
 
     function mousemove() {
+        if(isLoading){
+            return;
+        }
+
         var x0 = x.invert(d3.mouse(this)[0]),
             i = bisectDate(workingData, x0, 1),
             d0 = workingData[i - 1],
