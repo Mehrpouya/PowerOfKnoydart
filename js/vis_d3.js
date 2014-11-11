@@ -104,15 +104,13 @@ function cleard3() {
 
 function initd3(dataType, interval){
 
-  console.log('init with type: '+dataType.name+' and interval '+interval.name);
-
   isLoading = true;
 
   var parentWidth = $('.graphContainer').width();
 
   var margin = {top:50, right: 20, bottom: 40, left: 50},
   width = parentWidth - margin.left - margin.right,
-  height = ((parentWidth/2)+50) - margin.top - margin.bottom;
+  height = ((parentWidth/2)) - margin.top - margin.bottom;
 
   var parseDate = d3.time.format("%Y-%m-%d %X").parse;
   var bisectDate = d3.bisector(function(d) { return d.datetime; }).left;
@@ -164,8 +162,8 @@ function initd3(dataType, interval){
 
   if( chartDataCache[currentChartInterval.name] !== undefined )
   {
-    console.log(chartDataCache);
-    console.log('Delving into the cache');
+
+    // CACHED COPY
 
     isLoading = false;
 
@@ -176,8 +174,11 @@ function initd3(dataType, interval){
     // use the extent helper function to find the bounds of each axis
     x.domain(d3.extent(workingData, function(d) { return d.datetime; }));
 
-    var yMax = d3.max(workingData, function(d) { return d[dataType.yBounds]; });
-    y.domain([0, parseInt(yMax*1.2, 10)]);
+    var yMax = d3.max(workingData, function(d) { 
+      return +d[dataType.yBounds]; 
+    });
+
+    y.domain([0, (yMax*1.2)]);
 
     svg.append("g")
     .attr("class", "x axis")
@@ -252,7 +253,7 @@ function initd3(dataType, interval){
   }
   else
   {
-    console.log('Downloading new data');
+
     spinner.spin(target);
     isLoading = true;
 
@@ -301,8 +302,11 @@ function initd3(dataType, interval){
     // use the extent helper function to find the bounds of each axis
     x.domain(d3.extent(workingData, function(d) { return d.datetime; }));
 
-    var yMax = d3.max(workingData, function(d) { return d[dataType.yBounds]; });
-    y.domain([0, parseInt(yMax+yMax*0.25, 10)]);
+    var yMax = d3.max(workingData, function(d) { 
+      return +d[dataType.yBounds]; 
+    });
+
+    y.domain([0, (yMax*1.2)]);
 
     svg.append("g")
     .attr("class", "x axis")
@@ -430,7 +434,6 @@ $('button').click(function(event) {
   $('button').removeClass('buttonSelected');
   $(this).addClass('buttonSelected');
 
-  console.log('click on '+buttonClicked);
 
   currentChartInterval = chartIntervals[buttonClicked];
   cleard3();
@@ -455,7 +458,6 @@ $('.chartToggle').click(function(event) {
   $('.chartToggle').removeClass('chartSelected');
   $(this).addClass('chartSelected');
 
-  console.log('click on '+buttonClicked);
 
   currentChartType = chartTypes[buttonClicked];
   cleard3();
