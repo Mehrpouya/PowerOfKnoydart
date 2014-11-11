@@ -45,21 +45,40 @@ var chartContainer = d3.select("#graphContainer");
 var chartTypes = {
   demand: {
     name: "demand",
-    lines: ["pow_act"],
+    lines: [
+        {
+          section: "readings",
+          field: "active_power"
+        }
+      ],
     bars: [],
-    yBounds: "pow_act",
+    yBounds: "active_power",
     ylabel: "Power Demanded"
   },
   rainfall: {
     name: "rainfall",
-    lines: ["dam_lvl", "rain"],
+    lines: [
+        {
+          section: "levels",
+          field: "dam_level"
+        },
+        {
+          section:"levels",
+          field: "rainfall"
+        }
+      ],
     bars: [],
-    yBounds: "dam_lvl",
+    yBounds: "dam_level",
     ylabel: "Dam Level + Rainfall"
   },
   production: {
     name: "production",
-    lines: ["elster"],
+    lines: [
+        {
+          section: "elster",
+          field: "elster"
+        }
+      ],
     bars: [],
     yBounds: "elster",
     ylabel: "Power Production"
@@ -113,7 +132,7 @@ function initd3(dataType, interval){
   height = ((parentWidth/2)) - margin.top - margin.bottom;
 
   var parseDate = d3.time.format("%Y-%m-%d %X").parse;
-  var bisectDate = d3.bisector(function(d) { return d.datetime; }).left;
+  var bisectDate = d3.bisector(function(d) { return d.time_created; }).left;
 
   var x = d3.time.scale()
   .range([0, width]);
@@ -172,7 +191,7 @@ function initd3(dataType, interval){
     // figure out the smallest where we have 2 sets
 
     // use the extent helper function to find the bounds of each axis
-    x.domain(d3.extent(workingData, function(d) { return d.datetime; }));
+    x.domain(d3.extent(workingData, function(d) { return d.time_created; }));
 
     var yMax = d3.max(workingData, function(d) { 
       return +d[dataType.yBounds]; 
@@ -243,7 +262,7 @@ function initd3(dataType, interval){
         .data(workingData)
       .enter().append("rect")
         .style("fill", "steelblue")
-        .attr("x", function(d) { return x(d.datetime); })
+        .attr("x", function(d) { return x(d.time_created); })
         .attr("width", x.rangeBand())
         .attr("y", function(d) { return y(d[dataType.bars[0]]); })
         .attr("height", function(d) { return height - y(d[dataType.bars[0]]); });
@@ -259,6 +278,8 @@ function initd3(dataType, interval){
 
     d3.json(url+interval.name, function(error, data) {
 
+    console.log(data);
+
     // download completion housekeeping
     isLoading = false;
     spinner.stop();
@@ -266,7 +287,7 @@ function initd3(dataType, interval){
     // strip out garbage we dont want
     var count = 0;
 
-    data.forEach(function(d) {
+    data[dataType.lines[0].section].forEach(function(d) {
       count++;
 
       if(count === interval.filterEach){
@@ -274,11 +295,11 @@ function initd3(dataType, interval){
         count = 0;
 
         
-        d.datetime = parseDate(d.datetime);
+        d.time_created = parseDate(d.time_created);
 
         for (var i=0; i<dataType.lines.length; i++)
         {
-          if(dataType.lines[i] === "rain")
+          if(dataType.lines[i] === "rainfall")
           {
             d[dataType.lines[i]] = +(parseFloat(d[dataType.lines[i]]) * 10);
           }
@@ -300,7 +321,7 @@ function initd3(dataType, interval){
     chartDataCache[currentChartInterval.name] = workingData;
 
     // use the extent helper function to find the bounds of each axis
-    x.domain(d3.extent(workingData, function(d) { return d.datetime; }));
+    x.domain(d3.extent(workingData, function(d) { return d.time_created; }));
 
     var yMax = d3.max(workingData, function(d) { 
       return +d[dataType.yBounds]; 
@@ -347,7 +368,7 @@ function initd3(dataType, interval){
         .data(workingData)
       .enter().append("rect")
         .style("fill", "steelblue")
-        .attr("x", function(d) { return x(d.datetime); })
+        .attr("x", function(d) { return x(d.time_created); })
         .attr("width", x.rangeBand())
         .attr("y", function(d) { return y(d[dataType.bars[0]]); })
         .attr("height", function(d) { return height - y(d[dataType.bars[0]]); });
@@ -386,9 +407,9 @@ function initd3(dataType, interval){
             i = bisectDate(workingData, x0, 1),
             d0 = workingData[i - 1],
             d1 = workingData[i],
-            d = x0 - d0.datetime > d1.datetime - x0 ? d1 : d0;
-        focus.attr("transform", "translate(" + x(d.datetime) + "," + y(d[dataType.lines[0]]) + ")");
-        focus.select("text").text(d[dataType.lines[0]]);
+            d = x0 - d0.time_created > d1.time_created - x0 ? d1 : d0;
+        focus.attr("transform", "translate(" + x(d.time_created) + "," + y(d[dataType.lines[0].field]) + ")");
+        focus.select("text").text(d[dataType.lines[0].field]);
     }
 
 }
@@ -407,11 +428,12 @@ function createLine(fromData, x, y){
   var line = d3.svg.line()
   .x(function(d)
   {
-    return x(d.datetime);
+    return x(d.time_created);
   })
   .y(function(d)
   {
-    return y(d[fromData]);
+    console.log(d);
+    return y(d[fromData.field]);
   });
   return line;
 }
