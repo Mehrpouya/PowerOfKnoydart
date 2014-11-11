@@ -25,8 +25,9 @@
   <script src="js/spin.js"></script>
   <script src="http://d3js.org/d3.v3.js"></script>
 
-  <link rel="stylesheet" href="style.css">
+  
   <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css">
+  <link rel="stylesheet" href="style.css">
 
 </head>
 
@@ -37,7 +38,7 @@
 
   <header class="span2">
   	<div class="inner cf">
-  		<h1 class="alt span9">Power of Knoydart</h1> ~ <h1 class="alt span9">Automatic alert here</h1>
+  		<h1 class="alt span9">Power of Knoydart</h1><!-- ~ <h1 class="alt span9">Automatic alert here</h1>-->
   	<nav class="span1 col">
 			<!-- <ul class="cf">
 				<li class="chartToggle" id="demand"><a class="alt chartSelected" href="#">Power Demand</a></li>
@@ -62,7 +63,18 @@
           </div>
         </section>
         <section class="center-contents">
-          <button class="buttonSelected" id="lastHour">Hour</button><button id="lastDay">Day</button><button id="lastWeek">Week</button><button id="lastMonth">Month</button>
+            <button class="buttonSelected" id="lastHour">
+                <image src="img/icon_set/hour.png"/>
+            </button>
+            <button id="lastDay">
+                <image src="img/icon_set/day.png"/>
+            </button>
+            <button id="lastWeek">
+                <image src="img/icon_set/week.png"/>
+            </button>
+            <button id="lastMonth">
+                <image src="img/icon_set/month.png"/>
+            </button>
         </section>
 			</article>
 
