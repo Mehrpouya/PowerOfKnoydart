@@ -276,6 +276,8 @@ function initd3(dataType, interval){
     spinner.spin(target);
     isLoading = true;
 
+    console.log(url+interval.name);
+
     d3.json(url+interval.name, function(error, data) {
 
     console.log(data);

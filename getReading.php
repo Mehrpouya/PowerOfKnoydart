@@ -19,19 +19,34 @@ if ($db->connect_errno > 0) {
     die('Unable to connect to database [' . $db->connect_error . ']');
 } else {
     if ($type == "lastHour") {
-        $sql = "SELECT `active_power`, `reactive_power`, `time_created` FROM `readings` WHERE `time_created` >= DATE_SUB( NOW(), INTERVAL 1 HOUR ) AND `time_created` <= NOW() ORDER BY `time_created`;";
+
+        $returned_array = array();
+        $returned_array['readings'] = array();
+        $returned_array['rain_readings'] = array();
+
+        // MAIN READINGS
+        $sql = "SELECT `active_power`, `reactive_power`, `time_created` FROM `readings` WHERE `time_created` >= DATE_SUB( NOW(), INTERVAL 1 HOUR ) AND `time_created` <= NOW() ORDER BY `time_created`";
 
         if (!$result = $db->query($sql)) {
             die('There was an error running the query [' . $db->error . ']');
         }
-        
-        $returned_array = array();
-        $returned_array['readings'] = array();
-        $returned_array['levels'] = array();
 
         while ($row = $result->fetch_assoc()) {
             $returned_array['readings'][]=$row;
         }
+
+        // RAIN
+        $sql = "SELECT `active_power`, `reactive_power`, `time_created` FROM `rain_readings` WHERE `date_created` >= DATE_SUB( NOW(), INTERVAL 1 HOUR ) AND `date_created` <= NOW() ORDER BY `date_created`";
+        
+        if (!$result = $db->query($sql)) {
+            die('There was an error running the query [' . $db->error . ']');
+        }
+
+        while ($row = $result->fetch_assoc()) {
+            $returned_array['rain_readings'][]=$row;
+        }
+
+        
         echo json_encode($returned_array);
     }else if ($type == "lastDay") {
         $sql = "SELECT `active_power`, `reactive_power`, `time_created` FROM `readings` WHERE `time_created` >= DATE_SUB( NOW(), INTERVAL 1 DAY ) AND `time_created` <= NOW() GROUP BY UNIX_TIMESTAMP(`time_created`) DIV 10";
