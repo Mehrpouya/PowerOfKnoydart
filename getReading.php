@@ -36,7 +36,7 @@ if ($db->connect_errno > 0) {
         }
 
         // RAIN
-        $sql = "SELECT `active_power`, `reactive_power`, `time_created` FROM `rain_readings` WHERE `date_created` >= DATE_SUB( NOW(), INTERVAL 1 HOUR ) AND `date_created` <= NOW() ORDER BY `date_created`";
+        $sql = "SELECT `rainfall`, `dam_level`, `flow` FROM `rain_readings` WHERE `date_created` >= DATE_SUB( NOW(), INTERVAL 1 HOUR ) AND `date_created` <= NOW() ORDER BY `date_created`";
         
         if (!$result = $db->query($sql)) {
             die('There was an error running the query [' . $db->error . ']');
