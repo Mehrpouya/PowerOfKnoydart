@@ -46,6 +46,7 @@ if ($db->connect_errno > 0) {
             $returned_array['levels'][]=$row;
         }
 
+        // print_r($returned_array);
         
         echo json_encode($returned_array);
 
@@ -98,7 +99,7 @@ if ($db->connect_errno > 0) {
         }
 
         // RAIN + DAM
-        $sql = "SELECT `rainfall`, `dam_level`, `flow`, `date_created` as `time_created` FROM `readings` WHERE `date_created` >= DATE_SUB( NOW(), INTERVAL 7 DAY ) AND `date_created` <= NOW() GROUP BY UNIX_TIMESTAMP(`date_created`) DIV 3600";
+        $sql = "SELECT `rainfall`, `dam_level`, `flow`, `date_created` as `time_created` FROM `rain_readings` WHERE `date_created` >= DATE_SUB( NOW(), INTERVAL 7 DAY ) AND `date_created` <= NOW() GROUP BY UNIX_TIMESTAMP(`date_created`) DIV 3600";
 
         if (!$result = $db->query($sql)) {
             die('There was an error running the query [' . $db->error . ']');
@@ -109,7 +110,7 @@ if ($db->connect_errno > 0) {
             $returned_array['levels'][]=$row;
         }
 
-        echo json_encode($rows);
+        echo json_encode($returned_array);
 
     } else if ($type == "lastMonth") {
         
@@ -117,7 +118,7 @@ if ($db->connect_errno > 0) {
         $returned_array['readings'] = array();
         $returned_array['levels'] = array();
 
-        $sql = "SELECT `active_power`, `reactive_power`, `time_created` FROM `readings`, `rain_readings`, `elster_readings` WHERE `time_created` >= DATE_SUB( NOW(), INTERVAL 30 DAY ) AND `time_created` <= NOW() GROUP BY UNIX_TIMESTAMP(`time_created`) DIV 3600";
+        $sql = "SELECT `active_power`, `reactive_power`, `time_created` FROM `readings` WHERE `time_created` >= DATE_SUB( NOW(), INTERVAL 30 DAY ) AND `time_created` <= NOW() GROUP BY UNIX_TIMESTAMP(`time_created`) DIV 3600";
 
         if (!$result = $db->query($sql)) {
             die('There was an error running the query [' . $db->error . ']');
@@ -127,7 +128,7 @@ if ($db->connect_errno > 0) {
             $returned_array['readings'][]=$row;
         }
 
-        $sql = "SELECT `rainfall`, `dam_level`, `flow`, `date_created` as `time_created` FROM `readings`, `rain_readings`, `elster_readings` WHERE `date_created` >= DATE_SUB( NOW(), INTERVAL 30 DAY ) AND `date_created` <= NOW() GROUP BY UNIX_TIMESTAMP(`date_created`) DIV 3600";
+        $sql = "SELECT `rainfall`, `dam_level`, `flow`, `date_created` as `time_created` FROM `rain_readings` WHERE `date_created` >= DATE_SUB( NOW(), INTERVAL 30 DAY ) AND `date_created` <= NOW() GROUP BY UNIX_TIMESTAMP(`date_created`) DIV 3600";
 
         if (!$result = $db->query($sql)) {
             die('There was an error running the query [' . $db->error . ']');
@@ -139,7 +140,7 @@ if ($db->connect_errno > 0) {
         }
 
 
-        echo json_encode($rows);
+        echo json_encode($returned_array);
     } else if($type=="between") {
         if (isset($_GET["from"],$_GET["to"])) {
 

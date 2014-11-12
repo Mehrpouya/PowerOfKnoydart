@@ -30,6 +30,8 @@ var opts = {
 
 var target, spinner, isLoading;
 
+var workingData;
+
 
 /* END SPINNER *
 
@@ -37,7 +39,6 @@ var target, spinner, isLoading;
 
 // base url
 var url = "http://cyberscot.co.uk/powerofknoydart/getReading.php?type=";
-var workingData = [];
 
 // where the graphs go
 var chartContainer = d3.select("#graphContainer");
@@ -70,7 +71,7 @@ var chartTypes = {
     bars: [],
     yBounds: "dam_level",
     ylabel: "Dam Level + Rainfall"
-  },
+  }/*,
   production: {
     name: "production",
     lines: [
@@ -82,27 +83,23 @@ var chartTypes = {
     bars: [],
     yBounds: "elster",
     ylabel: "Power Production"
-  }
+  }*/
 };
 
 var chartIntervals = {
   lastHour: {
-    filterEach: 10,
     name: "lastHour",
     xFormat: "%H:%M"
   },
   lastDay: {
-    filterEach: 360,
     name: "lastDay",
     xFormat: "%H:%M"
   },
   lastWeek: {
-    filterEach: 1,
     name: "lastWeek",
     xFormat: "%a %H:%M"
   },
   lastMonth: {
-    filterEach: 1,
     name: "lastMonth",
     xFormat: "%a %d %b"
   }
@@ -117,11 +114,12 @@ var currentChartInterval = chartIntervals.lastHour;
 
 function cleard3() {
   $('svg g').remove();
-  workingData = [];
+  workingData = "";
 }
 
 
 function initd3(dataType, interval){
+
 
   isLoading = true;
 
@@ -191,9 +189,9 @@ function initd3(dataType, interval){
     // figure out the smallest where we have 2 sets
 
     // use the extent helper function to find the bounds of each axis
-    x.domain(d3.extent(workingData, function(d) { return d.time_created; }));
+    x.domain(d3.extent(workingData[dataType.lines[0].section], function(d) { return d.time_created; }));
 
-    var yMax = d3.max(workingData, function(d) { 
+    var yMax = d3.max(workingData[dataType.lines[0].section], function(d) { 
       return +d[dataType.yBounds]; 
     });
 
@@ -226,9 +224,9 @@ function initd3(dataType, interval){
 
     for(i=0; i<svgLines.length; i++)
     {
-
+      // console.log(workingData[dataType.lines[0].section]);
       svg.append("path")
-      .datum(workingData)
+      .datum(workingData[dataType.lines[0].section])
       .attr("class", "line")
       .attr("d", svgLines[i]);
     }
@@ -276,107 +274,101 @@ function initd3(dataType, interval){
     spinner.spin(target);
     isLoading = true;
 
-    console.log(url+interval.name);
-
     d3.json(url+interval.name, function(error, data) {
 
-    console.log(data);
+      workingData=data;
 
-    // download completion housekeeping
-    isLoading = false;
-    spinner.stop();
+      // download completion housekeeping
+      isLoading = false;
+      spinner.stop();
 
-    // strip out garbage we dont want
-    var count = 0;
+      for (var key in workingData) {
+        if (workingData.hasOwnProperty(key)) {
+            
+            workingData[key].forEach(function(d) {
+              
+              for (var key in d)
+              {
+                if (d.hasOwnProperty(key))
+                {
+                  if(key === "time_created")
+                  {
+                    d.time_created = parseDate(d.time_created);
+                  }
+                  else if(key === "rainfall")
+                  {
+                    d[key] = +(parseFloat(d[key]) * 10);
+                  }
+                  else
+                  {
+                    d[key] = +parseFloat(d[key]);
+                  }
+                }
+              }
 
-    data[dataType.lines[0].section].forEach(function(d) {
-      count++;
-
-      if(count === interval.filterEach){
-        workingData.push(d);
-        count = 0;
-
-        
-        d.time_created = parseDate(d.time_created);
-
-        for (var i=0; i<dataType.lines.length; i++)
-        {
-          if(dataType.lines[i] === "rainfall")
-          {
-            d[dataType.lines[i]] = +(parseFloat(d[dataType.lines[i]]) * 10);
-          }
-          else
-          {
-            d[dataType.lines[i]] = +parseFloat(d[dataType.lines[i]]);
-          }
+          });
         }
-
-        for (i=0; i<dataType.bars.length; i++)
-        {
-          d[dataType.bars[i]] = +parseFloat(d[dataType.bars[i]]);
-        }
-
       }
-    });
 
-    // no need to download next time yo!
-    chartDataCache[currentChartInterval.name] = workingData;
+      // no need to download next time yo!
+      chartDataCache[currentChartInterval.name] = workingData;
 
-    // use the extent helper function to find the bounds of each axis
-    x.domain(d3.extent(workingData, function(d) { return d.time_created; }));
+      // use the extent helper function to find the bounds of each axis
+      x.domain(d3.extent(workingData[dataType.lines[0].section], function(d) { return d.time_created; }));
 
-    var yMax = d3.max(workingData, function(d) { 
-      return +d[dataType.yBounds]; 
-    });
+      var yMax = d3.max(workingData[dataType.lines[0].section], function(d) { 
+        return +d[dataType.yBounds]; 
+      });
 
-    y.domain([0, (yMax*1.2)]);
+      y.domain([0, (yMax*1.2)]);
 
-    svg.append("g")
-    .attr("class", "x axis")
-    .attr("transform", "translate(0," + height + ")")
-    .call(xAxis)
-    .selectAll("text")
-    .style("text-anchor", "end")
-    .attr("dx", "-.8em")
-    .attr("dy", ".15em")
-    .attr("transform", function(d) {
-      return "rotate(-25)";
-    });
+      svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis)
+      .selectAll("text")
+      .style("text-anchor", "end")
+      .attr("dx", "-.8em")
+      .attr("dy", ".15em")
+      .attr("transform", function(d) {
+        return "rotate(-25)";
+      });
 
-    svg.append("g")
-    .attr("class", "y axis")
-    .call(yAxis)
-    .append("text")
-    .attr("transform", "rotate(-90)")
-    .attr("y", 6)
-    .attr("dy", ".71em")
-    .style("text-anchor", "end")
-    .text(dataType.ylabel);
+      svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis)
+      .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end")
+      .text(dataType.ylabel);
 
 
-    for(var i=0; i<svgLines.length; i++)
-    {
+      for(var i=0; i<svgLines.length; i++)
+      {
+        // console.log(workingData[dataType.lines[0].section]);
 
-      svg.append("path")
-      .datum(workingData)
-      .attr("class", "line")
-      .attr("d", svgLines[i]);
-    }
+        svg.append("path")
+        .datum(workingData[dataType.lines[0].section])
+        .attr("class", "line")
+        .attr("d", svgLines[i]);
+      }
 
-    /*
-    if(dataType.bars.length > 0)
-    {
-      svg.selectAll("bar")
-        .data(workingData)
-      .enter().append("rect")
-        .style("fill", "steelblue")
-        .attr("x", function(d) { return x(d.time_created); })
-        .attr("width", x.rangeBand())
-        .attr("y", function(d) { return y(d[dataType.bars[0]]); })
-        .attr("height", function(d) { return height - y(d[dataType.bars[0]]); });
-    }
-    */
-   
+      /*
+      if(dataType.bars.length > 0)
+      {
+        svg.selectAll("bar")
+          .data(workingData)
+        .enter().append("rect")
+          .style("fill", "steelblue")
+          .attr("x", function(d) { return x(d.time_created); })
+          .attr("width", x.rangeBand())
+          .attr("y", function(d) { return y(d[dataType.bars[0]]); })
+          .attr("height", function(d) { return height - y(d[dataType.bars[0]]); });
+      }
+      */
+     
 
   });
 }
@@ -405,10 +397,12 @@ function initd3(dataType, interval){
             return;
         }
 
+        var s = dataType.lines[0].section;
+
         var x0 = x.invert(d3.mouse(this)[0]),
-            i = bisectDate(workingData, x0, 1),
-            d0 = workingData[i - 1],
-            d1 = workingData[i],
+            i = bisectDate(workingData[s], x0, 1),
+            d0 = workingData[s][i - 1],
+            d1 = workingData[s][i],
             d = x0 - d0.time_created > d1.time_created - x0 ? d1 : d0;
         focus.attr("transform", "translate(" + x(d.time_created) + "," + y(d[dataType.lines[0].field]) + ")");
         focus.select("text").text(d[dataType.lines[0].field]);
@@ -427,14 +421,15 @@ function chartAutoUpdate()
 }
 
 function createLine(fromData, x, y){
+
   var line = d3.svg.line()
   .x(function(d)
   {
+    // console.log(d.time_created);
     return x(d.time_created);
   })
   .y(function(d)
   {
-    // console.log(d);
     return y(d[fromData.field]);
   });
   return line;
