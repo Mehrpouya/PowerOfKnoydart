@@ -22,7 +22,7 @@ if ($db->connect_errno > 0) {
 
         $returned_array = array();
         $returned_array['readings'] = array();
-        $returned_array['rain_readings'] = array();
+        $returned_array['levels'] = array();
 
         // MAIN READINGS
         $sql = "SELECT `active_power`, `reactive_power`, `time_created` FROM `readings` WHERE `time_created` >= DATE_SUB( NOW(), INTERVAL 1 HOUR ) AND `time_created` <= NOW() ORDER BY `time_created`";
@@ -43,7 +43,7 @@ if ($db->connect_errno > 0) {
         }
 
         while ($row = $result->fetch_assoc()) {
-            $returned_array['rain_readings'][]=$row;
+            $returned_array['levels'][]=$row;
         }
 
         

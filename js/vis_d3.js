@@ -434,7 +434,7 @@ function createLine(fromData, x, y){
   })
   .y(function(d)
   {
-    console.log(d);
+    // console.log(d);
     return y(d[fromData.field]);
   });
   return line;
