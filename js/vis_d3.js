@@ -475,15 +475,15 @@ function updateAlert()
       {
         active_power = workingData[key][length-1]['active_power'];
 
-        if(active_power > 170.0)
+        if(active_power >= 170.0)
         {
           alertString = chartAlertStrings.over_power;
         }
-        else if(active_power > 150.0 && active_power < 170.0)
+        else if(active_power >= 150.0 && active_power < 170.0)
         {
           alertString = chartAlertStrings.high_power;
         }
-        else if(active_power > 100.0 && active_power < 150.0)
+        else if(active_power >= 100.0 && active_power < 150.0)
         {
           alertString = chartAlertStrings.normal_power;
         }
@@ -491,8 +491,7 @@ function updateAlert()
         {
           alertString = chartAlertStrings.spare_power;
         }
-
-        if(active_power < 10.0)
+        else if(active_power < 10.0)
         {
           alertString = chartAlertStrings.power_off;
         }
@@ -503,6 +502,10 @@ function updateAlert()
         if(dam < 1400.0 && active_power < 170.0)
         {
           alertString = chartAlertStrings.dam_low;
+        }
+        else if(dam < 1400.0 && active_power >= 170.0)
+        {
+          alertString = chartAlertStrings.over_power;
         }
       }
 
