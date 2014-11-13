@@ -286,7 +286,7 @@ function initd3(dataType, interval){
         if (workingData.hasOwnProperty(key)) {
             
             workingData[key].forEach(function(d) {
-              
+
               for (var key in d)
               {
                 if (d.hasOwnProperty(key))
@@ -472,6 +472,18 @@ $('.chartToggle').click(function(event) {
   if( currentChartType.name === buttonClicked )
   {
     return;
+  }
+
+  if(buttonClicked === "rainfall")
+  {
+    $('button#lastHour').hide();
+    currentChartInterval = chartIntervals.lastDay;
+    $('button').removeClass('buttonSelected');
+    $('button#lastDay').addClass('buttonSelected');
+  }
+  else
+  {
+    $('button#lastHour').show();
   }
 
   $('.chartToggle').removeClass('chartSelected');
