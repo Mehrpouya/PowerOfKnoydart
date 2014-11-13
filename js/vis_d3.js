@@ -150,6 +150,15 @@ function initd3(dataType, interval){
   .scale(y)
   .orient("left");
 
+  var area = d3.svg.area()
+    .x(function(d) {
+      return x(d.time_created);
+    })
+    .y0(height)
+    .y1(function(d) {
+      return y(+d[dataType.yBounds]);
+    });
+
   var svgLines = [];
 
   for (var i=0; i<dataType.lines.length; i++){
@@ -223,10 +232,18 @@ function initd3(dataType, interval){
     .text(dataType.ylabel);
 
 
-
-
     for(i=0; i<svgLines.length; i++)
     {
+
+      if(dataType.lines[i].field === dataType.yBounds)
+      {
+        svg.append("path")
+        .datum(workingData[dataType.lines[0].section])
+        .attr("class", "area")
+        .attr("d", area);
+      }
+
+
       // console.log(workingData[dataType.lines[0].section]);
       svg.append("path")
       .datum(workingData[dataType.lines[0].section])
@@ -353,7 +370,13 @@ function initd3(dataType, interval){
 
       for(var i=0; i<svgLines.length; i++)
       {
-        // console.log(workingData[dataType.lines[0].section]);
+        if(dataType.lines[i].field === dataType.yBounds)
+        {
+          svg.append("path")
+          .datum(workingData[dataType.lines[0].section])
+          .attr("class", "area")
+          .attr("d", area);
+        }
 
         svg.append("path")
         .datum(workingData[dataType.lines[0].section])
@@ -503,8 +526,6 @@ $('.intervalToggle').click(function(event) {
 
 // Detect clicks across the top nav to change datasets
 $('.chartToggle').click(function(event) {
-
-  console.log(event);
 
   if(isLoading){
     return;

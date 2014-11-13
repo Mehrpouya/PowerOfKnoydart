@@ -235,6 +235,11 @@ button{
   stroke: steelblue;
 }
 
+.area {
+  fill: lightsteelblue;
+  stroke-width: 0;
+}
+
 /* NAVIGATION */
 
 nav{
