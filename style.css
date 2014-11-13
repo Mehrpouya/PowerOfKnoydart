@@ -175,7 +175,7 @@ header h1{
 button{
   background-color: #fff;
   width:64px;
-  height:64px;
+  height:30px;
   padding:2px;
   margin:5px;
   border-radius: 5px;
@@ -190,12 +190,12 @@ button{
 
 .buttonSelected{
   background: -moz-linear-gradient(top, rgba(18,62,91,0.3) 0%, rgba(125,185,232,0) 100%); /* FF3.6+ */
-background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(18,62,91,0.3)), color-stop(100%,rgba(125,185,232,0))); /* Chrome,Safari4+ */
-background: -webkit-linear-gradient(top, rgba(18,62,91,0.3) 0%,rgba(125,185,232,0) 100%); /* Chrome10+,Safari5.1+ */
-background: -o-linear-gradient(top, rgba(18,62,91,0.3) 0%,rgba(125,185,232,0) 100%); /* Opera 11.10+ */
-background: -ms-linear-gradient(top, rgba(18,62,91,0.3) 0%,rgba(125,185,232,0) 100%); /* IE10+ */
-background: linear-gradient(to bottom, rgba(18,62,91,0.3) 0%,rgba(125,185,232,0) 100%); /* W3C */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4d123e5b', endColorstr='#007db9e8',GradientType=0 ); /* IE6-9 */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(18,62,91,0.3)), color-stop(100%,rgba(125,185,232,0))); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, rgba(18,62,91,0.3) 0%,rgba(125,185,232,0) 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, rgba(18,62,91,0.3) 0%,rgba(125,185,232,0) 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, rgba(18,62,91,0.3) 0%,rgba(125,185,232,0) 100%); /* IE10+ */
+  background: linear-gradient(to bottom, rgba(18,62,91,0.3) 0%,rgba(125,185,232,0) 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4d123e5b', endColorstr='#007db9e8',GradientType=0 ); /* IE6-9 */
 }
 
 .center-contents{
@@ -348,5 +348,27 @@ nav a{
 .cf {
     *zoom:1;
 }
+
+
+
+#topLogo{
+    width: 20em;
+}
+
+
+.cust-background {
+    background-color: #505050;
+    margin-left: 1em;
+    font-size: 1.3em;
+    height: 4em;
+    border:none;
+    text-align: center;
+    width: 20%;
+    float: left;
+}:first-child{
+    margin-left: 0 !important;
+}
+
+
 
 
