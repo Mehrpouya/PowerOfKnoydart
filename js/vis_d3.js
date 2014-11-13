@@ -491,7 +491,7 @@ $('.intervalToggle').click(function(event) {
     return;
   }
 
-  $('intervalToggle').removeClass('buttonSelected');
+  $('.intervalToggle').removeClass('buttonSelected');
   $(this).addClass('buttonSelected');
 
 
