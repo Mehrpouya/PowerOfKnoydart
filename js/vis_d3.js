@@ -73,19 +73,19 @@ var chartTypes = {
     bars: [],
     yBounds: "dam_level",
     ylabel: "Dam Level + Rainfall"
-  }/*,
+  },
   production: {
     name: "production",
     lines: [
         {
-          section: "elster",
-          field: "elster"
+          section: "readings",
+          field: "reactive_power"
         }
       ],
     bars: [],
-    yBounds: "elster",
+    yBounds: "reactive_power",
     ylabel: "Power Production"
-  }*/
+  }
 };
 
 var chartIntervals = {
