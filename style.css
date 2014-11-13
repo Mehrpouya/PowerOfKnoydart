@@ -373,9 +373,3 @@ nav a{
 }:first-child{
     margin-left: 0 !important;
 }
-
-
-.area {
-    fill: lightsteelblue;
-    stroke-width: 0;
-}
