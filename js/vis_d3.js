@@ -107,6 +107,15 @@ var chartIntervals = {
   }
 };
 
+var chartAlertStrings = {
+  over_power: "WARNING – We are using too much power! Please switch off all unnecessary appliances immediately!",
+  high_power: "Our power usage is currently HIGH please refrain from switching on unnecessary electrical appliances.",
+  normal_power: "Our power usage is just right, feel free to do whatever you want!",
+  spare_power: "Hey! We have loads of spare power available. Why don’t you do some laundry, use your power tools, cook tomorrow’s meal or switch the heating on.",
+  dam_low: "We are currently experiencing a dry spell and the dam depth is lower than normal. Please be considerate when consuming electricity.",
+  power_off: "We are currently using the diesel generator to provide electricity. Please conserve your energy usage until this message changes."
+};
+
 var chartDataCache = {};
 
 var currentChartType = chartTypes.demand;
@@ -203,8 +212,8 @@ function initd3(dataType, interval){
     // use the extent helper function to find the bounds of each axis
     x.domain(d3.extent(workingData[dataType.lines[0].section], function(d) { return d.time_created; }));
 
-    var yMax = d3.max(workingData[dataType.lines[0].section], function(d) { 
-      return +d[dataType.yBounds]; 
+    var yMax = d3.max(workingData[dataType.lines[0].section], function(d) {
+      return +d[dataType.yBounds];
     });
 
     y.domain([0, (yMax*1.2)]);
@@ -251,42 +260,7 @@ function initd3(dataType, interval){
       .attr("d", svgLines[i]);
     }
 
-
-
-    // var focus = svg.append("g")
-    // .attr("class", "focus")
-    // .style("display", "none");
-
-    // focus.append("circle")
-    // .attr("r", 4.5);
-
-    // focus.append("text")
-    // .attr("x", 9)
-    // .attr("dy", ".35em");
-
-    // svg.append("rect")
-    // .attr("class", "overlay")
-    // .attr("width", width)
-    // .attr("height", height)
-    // .on("mouseover", function() { focus.style("display", null); })
-    // .on("mouseout", function() { focus.style("display", "none"); })
-    // .on("mousemove", mousemove);
-
-
-    /*
-    if(dataType.bars.length > 0)
-    {
-      svg.selectAll("bar")
-        .data(workingData)
-      .enter().append("rect")
-        .style("fill", "steelblue")
-        .attr("x", function(d) { return x(d.time_created); })
-        .attr("width", x.rangeBand())
-        .attr("y", function(d) { return y(d[dataType.bars[0]]); })
-        .attr("height", function(d) { return height - y(d[dataType.bars[0]]); });
-    }
-
-    */
+    updateAlert();
   }
   else
   {
@@ -336,11 +310,13 @@ function initd3(dataType, interval){
       // no need to download next time yo!
       chartDataCache[currentChartInterval.name] = workingData;
 
+      updateAlert();
+
       // use the extent helper function to find the bounds of each axis
       x.domain(d3.extent(workingData[dataType.lines[0].section], function(d) { return d.time_created; }));
 
-      var yMax = d3.max(workingData[dataType.lines[0].section], function(d) { 
-        return +d[dataType.yBounds]; 
+      var yMax = d3.max(workingData[dataType.lines[0].section], function(d) {
+        return +d[dataType.yBounds];
       });
 
       y.domain([0, (yMax*1.2)]);
@@ -383,21 +359,6 @@ function initd3(dataType, interval){
         .attr("class", "line")
         .attr("d", svgLines[i]);
       }
-
-      /*
-      if(dataType.bars.length > 0)
-      {
-        svg.selectAll("bar")
-          .data(workingData)
-        .enter().append("rect")
-          .style("fill", "steelblue")
-          .attr("x", function(d) { return x(d.time_created); })
-          .attr("width", x.rangeBand())
-          .attr("y", function(d) { return y(d[dataType.bars[0]]); })
-          .attr("height", function(d) { return height - y(d[dataType.bars[0]]); });
-      }
-      */
-     
 
   });
 }
@@ -497,6 +458,57 @@ function createLine(fromData, x, y){
     return y(d[fromData.field]);
   });
   return line;
+}
+
+function updateAlert()
+{
+  var alertString = "";
+
+  for (var key in workingData)
+  {
+    if (workingData.hasOwnProperty(key))
+    {
+      var length = workingData[key].length;
+      var active_power, dam;
+
+      if(key === 'readings')
+      {
+        active_power = workingData[key][length-1]['active_power'];
+
+        if(active_power > 170.0)
+        {
+          alertString = chartAlertStrings.over_power;
+        }
+        else if(active_power > 150.0 && active_power < 170.0)
+        {
+          alertString = chartAlertStrings.high_power;
+        }
+        else if(active_power > 100.0 && active_power < 150.0)
+        {
+          alertString = chartAlertStrings.normal_power;
+        }
+        else if(active_power < 100.0)
+        {
+          alertString = chartAlertStrings.spare_power;
+        }
+
+        if(active_power < 10.0)
+        {
+          alertString = chartAlertStrings.power_off;
+        }
+      }
+      else if(key === 'levels')
+      {
+        dam = workingData[key][length-1]['dam_level'];
+        if(dam < 1400.0 && active_power < 170.0)
+        {
+          alertString = chartAlertStrings.dam_low;
+        }
+      }
+
+      $('.systemAlert').text(alertString);
+    }
+  }
 }
 
 

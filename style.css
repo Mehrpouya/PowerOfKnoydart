@@ -172,6 +172,10 @@ header h1{
   text-decoration: underline;
 }
 
+.systemAlert{
+  
+}
+
 button{
   background-color: #fff;
   width:64px;
