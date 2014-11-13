@@ -479,7 +479,7 @@ function createLine(fromData, x, y){
 
 /* BUTTON EVENTS */
 
-$('button').click(function(event) {
+$('.intervalToggle').click(function(event) {
   if(isLoading){
     return;
   }
@@ -491,7 +491,7 @@ $('button').click(function(event) {
     return;
   }
 
-  $('button').removeClass('buttonSelected');
+  $('intervalToggle').removeClass('buttonSelected');
   $(this).addClass('buttonSelected');
 
 
@@ -504,11 +504,15 @@ $('button').click(function(event) {
 // Detect clicks across the top nav to change datasets
 $('.chartToggle').click(function(event) {
 
+  console.log(event);
+
   if(isLoading){
     return;
   }
 
   var buttonClicked = $(this)[0].id;
+
+  // console.log(event);
 
   if( currentChartType.name === buttonClicked )
   {
