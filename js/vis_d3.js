@@ -32,6 +32,8 @@ var target, spinner, isLoading;
 
 var workingData;
 
+var autoUpdateInterval;
+
 
 /* END SPINNER *
 
@@ -110,6 +112,8 @@ var chartDataCache = {};
 var currentChartType = chartTypes.demand;
 var currentChartInterval = chartIntervals.lastHour;
 
+var parseDate = d3.time.format("%Y-%m-%d %X").parse;
+
 /* END CHART CONSTANTS */
 
 function cleard3() {
@@ -129,7 +133,6 @@ function initd3(dataType, interval){
   width = parentWidth - margin.left - margin.right,
   height = ((parentWidth/2)) - margin.top - margin.bottom;
 
-  var parseDate = d3.time.format("%Y-%m-%d %X").parse;
   var bisectDate = d3.bisector(function(d) { return d.time_created; }).left;
 
   var x = d3.time.scale()
@@ -273,8 +276,11 @@ function initd3(dataType, interval){
 
     spinner.spin(target);
     isLoading = true;
+    clearInterval(autoUpdateInterval);
 
     d3.json(url+interval.name, function(error, data) {
+
+      autoUpdateInterval = setInterval(chartAutoUpdate, 10000);
 
       workingData=data;
 
@@ -414,10 +420,45 @@ function initd3(dataType, interval){
 
 function chartAutoUpdate()
 {
-  // ajax the latest .php
-  // add to workingData for this and all cached
-  // cleard3
-  // 
+  $.getJSON( url+"lastOne" , function( data ) {
+    for (var key in workingData)
+    {
+      if (workingData.hasOwnProperty(key))
+      {
+        for (var val in data[key][0] )
+        {
+          if (data[key][0].hasOwnProperty(val))
+          {
+            data[key][0][val] = parseValues(data[key][0], val);
+            // workingData[key].push( parseValues(data[key][0], val) );
+          }
+        }
+        workingData[key].push( data[key][0] );
+      }
+    }
+    chartDataCache[currentChartInterval.name] = workingData;
+    cleard3();
+    initd3(currentChartType, currentChartInterval);
+  });
+}
+
+function parseValues(data, key)
+{
+  var parsed;
+
+  if(key === "time_created")
+  {
+    parsed = parseDate(data[key]);
+  }
+  else if(key === "rainfall")
+  {
+    parsed  = +(parseFloat(data[key]) * 10);
+  }
+  else
+  {
+    parsed  = +parseFloat(data[key]);
+  }
+  return parsed;
 }
 
 function createLine(fromData, x, y){
