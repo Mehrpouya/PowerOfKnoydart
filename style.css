@@ -350,3 +350,25 @@ nav a{
 }
 
 
+
+#topLogo{
+    width: 20em;
+}
+
+
+.cust-background {
+    background-color: #505050;
+    margin-left: 1em;
+    font-size: 1.3em;
+    height: 4em;
+    border:none;
+    text-align: center;
+    width: 20%;
+    float: left;
+}:first-child{
+    margin-left: 0 !important;
+}
+
+
+
+
