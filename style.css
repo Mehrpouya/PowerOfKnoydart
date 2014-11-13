@@ -375,5 +375,7 @@ nav a{
 }
 
 
-
-
+.area {
+    fill: lightsteelblue;
+    stroke-width: 0;
+}
