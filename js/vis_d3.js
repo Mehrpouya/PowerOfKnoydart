@@ -232,13 +232,17 @@ function initd3(dataType, interval){
 
     svg.append("g")
     .attr("class", "y axis")
-    .call(yAxis)
+    .call(yAxis);
+
+    // In case we add labels back
+    /*
     .append("text")
     .attr("transform", "rotate(-90)")
     .attr("y", 6)
     .attr("dy", ".71em")
     .style("text-anchor", "end")
-    .text(dataType.ylabel);
+    .text(dataType.ylabel)
+    */
 
 
     for(i=0; i<svgLines.length; i++)
@@ -335,14 +339,20 @@ function initd3(dataType, interval){
 
       svg.append("g")
       .attr("class", "y axis")
-      .call(yAxis)
+      .call(yAxis);
+
+
+      // in case we add labels again
+      /*
+
       .append("text")
       .attr("transform", "rotate(-90)")
       .attr("y", 6)
       .attr("dy", ".71em")
       .style("text-anchor", "end")
-      .text(dataType.ylabel);
+      .text(dataType.ylabel)
 
+      */
 
       for(var i=0; i<svgLines.length; i++)
       {
