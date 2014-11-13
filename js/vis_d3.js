@@ -230,21 +230,6 @@ function initd3(dataType, interval){
       return "rotate(-25)";
     });
 
-    svg.append("g")
-    .attr("class", "y axis")
-    .call(yAxis);
-
-    // In case we add labels back
-    /*
-    .append("text")
-    .attr("transform", "rotate(-90)")
-    .attr("y", 6)
-    .attr("dy", ".71em")
-    .style("text-anchor", "end")
-    .text(dataType.ylabel)
-    */
-
-
     for(i=0; i<svgLines.length; i++)
     {
 
@@ -263,6 +248,22 @@ function initd3(dataType, interval){
       .attr("class", "line")
       .attr("d", svgLines[i]);
     }
+
+    svg.append("g")
+    .attr("class", "y axis")
+    .call(yAxis);
+
+    // In case we add labels back
+    /*
+    .append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 6)
+    .attr("dy", ".71em")
+    .style("text-anchor", "end")
+    .text(dataType.ylabel)
+    */
+
+
 
     updateAlert();
   }
