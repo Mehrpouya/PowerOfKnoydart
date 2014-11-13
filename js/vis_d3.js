@@ -337,6 +337,23 @@ function initd3(dataType, interval){
         return "rotate(-25)";
       });
 
+
+      for(var i=0; i<svgLines.length; i++)
+      {
+        if(dataType.lines[i].field === dataType.yBounds)
+        {
+          svg.append("path")
+          .datum(workingData[dataType.lines[0].section])
+          .attr("class", "area")
+          .attr("d", area);
+        }
+
+        svg.append("path")
+        .datum(workingData[dataType.lines[0].section])
+        .attr("class", "line")
+        .attr("d", svgLines[i]);
+      }
+
       svg.append("g")
       .attr("class", "y axis")
       .call(yAxis);
@@ -354,21 +371,7 @@ function initd3(dataType, interval){
 
       */
 
-      for(var i=0; i<svgLines.length; i++)
-      {
-        if(dataType.lines[i].field === dataType.yBounds)
-        {
-          svg.append("path")
-          .datum(workingData[dataType.lines[0].section])
-          .attr("class", "area")
-          .attr("d", area);
-        }
-
-        svg.append("path")
-        .datum(workingData[dataType.lines[0].section])
-        .attr("class", "line")
-        .attr("d", svgLines[i]);
-      }
+      
 
   });
 }
