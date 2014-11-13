@@ -377,3 +377,14 @@ nav a{
 }:first-child{
     margin-left: 0 !important;
 }
+
+
+.alarmStuff{
+    margin-top: 20px;
+    background-color: white;
+    color: black;
+    
+}
+.alarmStuff *{
+    color: cornflowerblue;
+}
