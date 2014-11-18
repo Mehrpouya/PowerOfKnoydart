@@ -425,6 +425,10 @@ function initd3(dataType, interval){
 
 function chartAutoUpdate()
 {
+  var cacheReadingsLength = chartDataCache[currentChartInterval.name].readings.length -1;
+
+  console.log( chartDataCache[currentChartInterval.name].readings[cacheReadingsLength].time_created );
+
   $.getJSON( url+"lastOne" , function( data ) {
     for (var key in workingData)
     {
