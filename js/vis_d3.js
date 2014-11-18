@@ -123,6 +123,8 @@ var currentChartInterval = chartIntervals.lastHour;
 
 var parseDate = d3.time.format("%Y-%m-%d %X").parse;
 
+var ISODate = d3.time.format("%Y-%m-%d %X");
+
 /* END CHART CONSTANTS */
 
 function cleard3() {
@@ -426,23 +428,25 @@ function initd3(dataType, interval){
 function chartAutoUpdate()
 {
   var cacheReadingsLength = chartDataCache[currentChartInterval.name].readings.length -1;
+  var lastTime = ISODate( chartDataCache[currentChartInterval.name].readings[cacheReadingsLength].time_created );
 
-  console.log( chartDataCache[currentChartInterval.name].readings[cacheReadingsLength].time_created );
-
-  $.getJSON( url+"lastOne" , function( data ) {
+  $.getJSON( url+"since&since="+lastTime , function( data ) {
     for (var key in workingData)
     {
       if (workingData.hasOwnProperty(key))
       {
-        for (var val in data[key][0] )
+        for(var i=0; i<data[key].length -1; i++)
         {
-          if (data[key][0].hasOwnProperty(val))
+          for (var val in data[key][i] )
           {
-            data[key][0][val] = parseValues(data[key][0], val);
-            // workingData[key].push( parseValues(data[key][0], val) );
+            if (data[key][i].hasOwnProperty(val))
+            {
+              data[key][i][val] = parseValues(data[key][i], val);
+              // workingData[key].push( parseValues(data[key][0], val) );
+            }
           }
+          workingData[key].push( data[key][i] );
         }
-        workingData[key].push( data[key][0] );
       }
     }
     chartDataCache[currentChartInterval.name] = workingData;
@@ -523,6 +527,11 @@ function updateAlert()
       }
       else if(key === 'levels')
       {
+        if(length < 1)
+        {
+          return;
+        }
+        
         dam = workingData[key][length-1]['dam_level'];
         if(dam < 1400.0 && active_power < 170.0)
         {
