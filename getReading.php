@@ -166,7 +166,6 @@ if ($db->connect_errno > 0) {
 
         // MAIN READINGS
         $sql = "SELECT `active_power`, `reactive_power`, `time_created` FROM `readings` WHERE `time_created` >= '" . $start . "' ORDER BY `time_created`";
-        echo $sql;
         if (!$result = $db->query($sql)) {
             die('There was an error running the query [ ' . $db->error . ' ]');
         }
