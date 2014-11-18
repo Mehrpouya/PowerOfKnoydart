@@ -40,7 +40,7 @@ var autoUpdateInterval;
 /* CHART CONSTANTS */
 
 // base url
-var url = "http://powerofknoydart.org/getReading.php?type=";
+var url = "http://www.powerofknoydart.org/getReading.php?type=";
 
 // where the graphs go
 var chartContainer = d3.select("#graphContainer");
