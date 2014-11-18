@@ -22,7 +22,12 @@ time, mark, audio, video {
   font-size:100%;
   vertical-align:baseline;
   background:transparent;
+  
 } 
+header{
+    text-align: center;
+    
+}
 
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section { 
@@ -131,6 +136,7 @@ footer{
   }
 
 aside{
+    
   padding:0 15px;
   -webkit-box-shadow: 0 5px 10px #aaa;
   -moz-box-shadow: 0 5px 10px #aaa;
@@ -377,8 +383,13 @@ nav a{
 
 
 #topLogo{
-    width: 20em;
+    height: 13em;
+    
+    text-align: center;
+    margin-left: 0;
+    padding: 0;
 }
+
 
 
 .cust-background {
@@ -404,3 +415,36 @@ nav a{
 .alarmStuff *{
     color: cornflowerblue;
 }
+
+.likeTabs{
+    display: block;
+    
+}
+
+.backgroundCustom{
+    background-color: #222;
+    display: block;
+    
+    width: 100%;
+}
+.backgroundCustom ul{
+    background-color: #222;
+}
+.backgroundCustom ul li{
+    /*float: left;*/
+    color: white;
+    margin-left: 10px;
+    margin: auto;
+}
+.backgroundCustom ul li button{
+    color: white;
+    width: 30%;
+    text-decoration: none;
+    border-radius: 10px;
+    
+}
+.backgroundCustom ul li button:hover{
+    color: red;
+    border-radius: 10px;    
+}
+
