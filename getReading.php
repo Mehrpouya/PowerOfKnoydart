@@ -14,7 +14,8 @@ $db = new mysqli($host, $username, $password, $database);
 $startDate = '2014-04-17 10:30:00';
 $endDate = '2014-04-17 12:30:00';
 $type = $_GET["type"];
-if(!isset($type))$type="lastHour";
+if (!isset($type))
+    $type = "lastHour";
 if ($db->connect_errno > 0) {
     die('Unable to connect to database [' . $db->connect_error . ']');
 } else {
@@ -32,25 +33,24 @@ if ($db->connect_errno > 0) {
         }
 
         while ($row = $result->fetch_assoc()) {
-            $returned_array['readings'][]=$row;
+            $returned_array['readings'][] = $row;
         }
 
         // RAIN + DAM
         $sql = "SELECT `rainfall`, `dam_level`, `flow`, `date_created` as `time_created`  FROM `rain_readings` WHERE `date_created` >= DATE_SUB( NOW(), INTERVAL 1 HOUR ) AND `date_created` <= NOW() ORDER BY `date_created`";
-        
+
         if (!$result = $db->query($sql)) {
             die('There was an error running the query [' . $db->error . ']');
         }
 
         while ($row = $result->fetch_assoc()) {
-            $returned_array['levels'][]=$row;
+            $returned_array['levels'][] = $row;
         }
 
         // print_r($returned_array);
-        
-        echo json_encode($returned_array);
 
-    }else if ($type == "lastDay") {
+        echo json_encode($returned_array);
+    } else if ($type == "lastDay") {
 
         $returned_array = array();
         $returned_array['readings'] = array();
@@ -62,9 +62,9 @@ if ($db->connect_errno > 0) {
         if (!$result = $db->query($sql)) {
             die('There was an error running the query [' . $db->error . ']');
         }
-        
+
         while ($row = $result->fetch_assoc()) {
-            $returned_array['readings'][]=$row;
+            $returned_array['readings'][] = $row;
         }
 
         // RAIN + DAM
@@ -73,14 +73,13 @@ if ($db->connect_errno > 0) {
         if (!$result = $db->query($sql)) {
             die('There was an error running the query [' . $db->error . ']');
         }
-        
+
         while ($row = $result->fetch_assoc()) {
 
-            $returned_array['levels'][]=$row;
+            $returned_array['levels'][] = $row;
         }
 
         echo json_encode($returned_array);
-
     } else if ($type == "lastWeek") {
 
         $returned_array = array();
@@ -93,9 +92,9 @@ if ($db->connect_errno > 0) {
         if (!$result = $db->query($sql)) {
             die('There was an error running the query [' . $db->error . ']');
         }
-        
+
         while ($row = $result->fetch_assoc()) {
-            $returned_array['readings'][]=$row;
+            $returned_array['readings'][] = $row;
         }
 
         // RAIN + DAM
@@ -104,16 +103,15 @@ if ($db->connect_errno > 0) {
         if (!$result = $db->query($sql)) {
             die('There was an error running the query [' . $db->error . ']');
         }
-        
+
         while ($row = $result->fetch_assoc()) {
 
-            $returned_array['levels'][]=$row;
+            $returned_array['levels'][] = $row;
         }
 
         echo json_encode($returned_array);
-
     } else if ($type == "lastMonth") {
-        
+
         $returned_array = array();
         $returned_array['readings'] = array();
         $returned_array['levels'] = array();
@@ -123,9 +121,9 @@ if ($db->connect_errno > 0) {
         if (!$result = $db->query($sql)) {
             die('There was an error running the query [' . $db->error . ']');
         }
-        
+
         while ($row = $result->fetch_assoc()) {
-            $returned_array['readings'][]=$row;
+            $returned_array['readings'][] = $row;
         }
 
         $sql = "SELECT `rainfall`, `dam_level`, `flow`, `date_created` as `time_created` FROM `rain_readings` WHERE `date_created` >= DATE_SUB( NOW(), INTERVAL 30 DAY ) AND `date_created` <= NOW() GROUP BY UNIX_TIMESTAMP(`date_created`) DIV 3600";
@@ -133,20 +131,19 @@ if ($db->connect_errno > 0) {
         if (!$result = $db->query($sql)) {
             die('There was an error running the query [' . $db->error . ']');
         }
-        
+
         while ($row = $result->fetch_assoc()) {
 
-            $returned_array['levels'][]=$row;
+            $returned_array['levels'][] = $row;
         }
 
 
         echo json_encode($returned_array);
-    } else if($type=="between") {
-        if (isset($_GET["from"],$_GET["to"])) {
+    } else if ($type == "between") {
+        if (isset($_GET["from"], $_GET["to"])) {
 
             $startDate = strtotime($_GET["from"]);
             $endDate = strtotime($_GET["to"]);
-
         }
         $sql = "SELECT (`active_power`, `reactive_power`, `time_created`) FROM `readings` WHERE "
                 . "`time_created` >= '" . $startDate
@@ -158,9 +155,40 @@ if ($db->connect_errno > 0) {
         }
         $rows = array();
         while ($row = $result->fetch_assoc()) {
-            $rows[]=$row;
+            $rows[] = $row;
         }
         echo json_encode($rows);
+    } else if ($type == "since") {
+        $start = $_GET["since"];
+        $returned_array = array();
+        $returned_array['readings'] = array();
+        $returned_array['levels'] = array();
+
+        // MAIN READINGS
+        $sql = "SELECT `active_power`, `reactive_power`, `time_created` FROM `readings` WHERE `time_created` >= '" . $start . "' ORDER BY `time_created`";
+        echo $sql;
+        if (!$result = $db->query($sql)) {
+            die('There was an error running the query [ ' . $db->error . ' ]');
+        }
+
+        while ($row = $result->fetch_assoc()) {
+            $returned_array['readings'][] = $row;
+        }
+
+        // RAIN + DAM
+        $sql = "SELECT `rainfall`, `dam_level`, `flow`, `date_created` as `time_created`  FROM `rain_readings` WHERE `date_created` >= '" . $start . "' ORDER BY `date_created`";
+
+        if (!$result = $db->query($sql)) {
+            die('There was an error running the query [' . $db->error . ']');
+        }
+
+        while ($row = $result->fetch_assoc()) {
+            $returned_array['levels'][] = $row;
+        }
+
+        // print_r($returned_array);
+
+        echo json_encode($returned_array);
     }
     mysql_free_result($result);
     mysql_close();
