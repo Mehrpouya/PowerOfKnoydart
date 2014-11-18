@@ -438,8 +438,9 @@ nav a{
 .backgroundCustom ul li button{
     color: white;
     width: 30%;
+    height: 45px;
     text-decoration: none;
-    border-radius: 10px;
+    border-radius: 5px;
     
 }
 .backgroundCustom ul li button:hover{
