@@ -137,7 +137,7 @@ footer{
 
 aside{
   max-height: 350px;
-  overflow: scroll;
+  overflow: auto;
   padding:0 15px;
   -webkit-box-shadow: 0 5px 10px #aaa;
   -moz-box-shadow: 0 5px 10px #aaa;
@@ -439,8 +439,9 @@ nav a{
 .backgroundCustom ul li button{
     color: white;
     width: 30%;
+    height: 45px;
     text-decoration: none;
-    border-radius: 10px;
+    border-radius: 5px;
     
 }
 .backgroundCustom ul li button:hover{
