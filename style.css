@@ -109,7 +109,7 @@ footer{
   margin-top: 10px;
 }
 
-  footer hr {
+  footer hr , header hr{
     color: #000;
     border: 0;
     height: 1px;
@@ -423,8 +423,7 @@ nav a{
 
 .backgroundCustom{
     background-color: #222;
-    display: block;
-    
+    display: inline-block;
     width: 100%;
 }
 .backgroundCustom ul{
