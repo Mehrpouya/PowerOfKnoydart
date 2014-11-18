@@ -114,6 +114,11 @@ footer{
     margin:0 5px;
   }
 
+  footer a{
+    color:#fff;
+    text-decoration: none;
+  }
+
 aside{
   padding:0 15px;
   -webkit-box-shadow: 0 5px 10px #aaa;
