@@ -136,7 +136,8 @@ footer{
   }
 
 aside{
-    
+  max-height: 350px;
+  overflow: scroll;
   padding:0 15px;
   -webkit-box-shadow: 0 5px 10px #aaa;
   -moz-box-shadow: 0 5px 10px #aaa;
