@@ -56,7 +56,7 @@ var chartTypes = {
       ],
     bars: [],
     yBounds: "active_power",
-    ylabel: "Power Demanded"
+    ylabel: "Power Demanded (kW)"
   },
   rainfall: {
     name: "rainfall",
@@ -129,6 +129,12 @@ function cleard3() {
   $('svg g').remove();
   workingData = "";
 }
+
+d3.selection.prototype.moveToFront = function() {
+  return this.each(function(){
+    this.parentNode.appendChild(this);
+  });
+};
 
 
 function initd3(dataType, interval){
@@ -251,17 +257,15 @@ function initd3(dataType, interval){
 
     svg.append("g")
     .attr("class", "y axis")
-    .call(yAxis);
-
-    // In case we add labels back
-    /*
+    .call(yAxis)
     .append("text")
-    .attr("transform", "rotate(-90)")
     .attr("y", 6)
+    .attr("x", 150)
     .attr("dy", ".71em")
     .style("text-anchor", "end")
-    .text(dataType.ylabel)
-    */
+    .text(dataType.ylabel);
+
+    // In case we add labels back    
 
 
 
@@ -357,20 +361,21 @@ function initd3(dataType, interval){
 
       svg.append("g")
       .attr("class", "y axis")
-      .call(yAxis);
-
-
-      // in case we add labels again
-      /*
-
+      .call(yAxis)
       .append("text")
-      .attr("transform", "rotate(-90)")
+      .attr("x", 150)
       .attr("y", 6)
       .attr("dy", ".71em")
       .style("text-anchor", "end")
-      .text(dataType.ylabel)
+      .text(dataType.ylabel);
 
-      */
+
+      // in case we add labels again
+      
+
+      
+
+      
 
       
 
@@ -400,6 +405,8 @@ function initd3(dataType, interval){
         if(isLoading){
             return;
         }
+
+        focus.moveToFront();
 
         var s = dataType.lines[0].section;
 
