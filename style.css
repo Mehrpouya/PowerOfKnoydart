@@ -91,7 +91,7 @@ body{
   color: #252e35; 
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; 
   line-height: 1.5em;
-  background: #f6f6f6;  
+  background: #fff;  
 }
 
 footer{
@@ -101,8 +101,14 @@ footer{
   z-index:999999;
   text-align: center;
   color: #fff;
-  padding-top: 10px;
+  margin-top: 10px;
 }
+
+  footer hr {
+    color: #000;
+    size: 2;
+    margin-top:0;
+  }
 
   footer img{
     height: 50px;
@@ -115,7 +121,7 @@ footer{
   }
 
   footer a{
-    color:#fff;
+    color:#000;
     text-decoration: none;
   }
 
