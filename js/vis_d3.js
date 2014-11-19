@@ -57,6 +57,7 @@ var chartTypes = {
     bars: [],
     yBounds: "active_power",
     ylabel: "Power Demanded (kW)",
+    asideTitle: "Power Demand",
     asideText: "This chart shows the community's total power usage in real time. If you switch on your kettle and wait 10 seconds for the chart to update you will see an increase in the community's consumption. <br/> <br/>Currently, the maximum power output of the hydro system is 180kW. If our power demand goes above this level the system will shutdown. Our peak power times are between 5pm and 8pm on winter and holiday nights - please keep an eye on this chart during these times and act according to the live message updates. Thank you!"
   },
   rainfall: {
@@ -73,7 +74,8 @@ var chartTypes = {
       ],
     bars: [],
     yBounds: "dam_level",
-    ylabel: "Dam Level + Rainfall",
+    ylabel: "Dam Level (mm) + Rainfall (mm)",
+    asideTitle: "Rainfall & Dam Level",
     asideText: "The Knoydart hydro dam stores enough water to power the community for almost two months without a single drop of rain. Most of the time there is plenty of water in the dam but sometimes we may ask you to conserve energy until water levels are restored in the loch."
   },
   production: {
@@ -86,7 +88,8 @@ var chartTypes = {
       ],
     bars: [],
     yBounds: "reactive_power",
-    ylabel: "Power Production",
+    ylabel: "Energy Production (kWh)",
+    asideTitle: "Energy Production",
     asideText: "This chart shows the amount of energy produced each hour and day. Units of energy are measured in kilowatt hours and Knoydart Renewables currently charges 14p/kWh for the standard tariff - which is cheaper than the mainland! <br/><br/>This money is used to help maintain one of the remotest hydro power sites in the UK and provide you with reliable electricity."
   }
 };
@@ -281,7 +284,7 @@ function initd3(dataType, interval){
     .call(yAxis)
     .append("text")
     .attr("y", 6)
-    .attr("x", 150)
+    .attr("x", 170)
     .attr("dy", ".71em")
     .style("text-anchor", "end")
     .text(dataType.ylabel);
@@ -643,6 +646,7 @@ $('.chartToggle').click(function(event) {
   currentChartType = chartTypes[buttonClicked];
 
   $('#dynamic_text').html(currentChartType.asideText);
+  $('#dynamic_title').html(currentChartType.asideTitle);
   cleard3();
   initd3(currentChartType, currentChartInterval);
 });
