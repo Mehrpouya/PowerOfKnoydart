@@ -143,7 +143,7 @@ aside{
   -moz-box-shadow: 0 5px 10px #aaa;
   box-shadow: 0 5px 10px #aaa;
   color: #fff;
-  background-color: #222;
+  background-color: #253A23;
 }
 
 h1{
@@ -196,7 +196,7 @@ header h1{
 }
 
 .systemAlert{
-  
+  color:#253A23;
 }
 
 button{
@@ -248,7 +248,7 @@ button{
 
 .line {
   fill: none;
-  stroke: steelblue;
+  stroke: #253a23;
   stroke-width: 1.5px;
 }
 
@@ -259,11 +259,11 @@ button{
 
 .focus circle {
   fill: none;
-  stroke: steelblue;
+  stroke: #253a23;
 }
 
 .area {
-  fill: lightsteelblue;
+  fill: #6C816A;
   stroke-width: 0;
 }
 
@@ -394,7 +394,7 @@ nav a{
 
 
 .cust-background {
-    background-color: #505050;
+    background-color: #6C816A;
     margin-left: 1em;
     font-size: 1.3em;
     height: 4em;
@@ -410,11 +410,6 @@ nav a{
 .alarmStuff{
     margin-top: 20px;
     background-color: white;
-    color: black;
-    
-}
-.alarmStuff *{
-    color: cornflowerblue;
 }
 
 .likeTabs{
@@ -423,12 +418,12 @@ nav a{
 }
 
 .backgroundCustom{
-    background-color: #222;
+    background-color: #253A23;
     display: inline-block;
     width: 100%;
 }
 .backgroundCustom ul{
-    background-color: #222;
+    background-color: #6C816A;
 }
 .backgroundCustom ul li{
     /*float: left;*/
@@ -445,7 +440,7 @@ nav a{
     
 }
 .backgroundCustom ul li button:hover{
-    color: red;
+    color: yellow;
     border-radius: 10px;    
 }
 
