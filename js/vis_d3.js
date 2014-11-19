@@ -229,6 +229,11 @@ function initd3(dataType, interval){
 
     y.domain([0, (yMax*1.2)]);
 
+    if( currentChartType.name === "demand" )
+    {
+      y.domain([0, 200]);
+    }
+
     svg.append("g")
     .attr("class", "x axis")
     .attr("transform", "translate(0," + height + ")")
@@ -260,6 +265,17 @@ function initd3(dataType, interval){
       .attr("d", svgLines[i]);
     }
 
+    if(currentChartType.name === "demand")
+    {
+      svg.append("line")
+        .style("stroke", "red")
+        .style("stroke-dasharray", ("3, 2"))
+        .attr("x1", 0)
+        .attr("y1", y(180))
+        .attr("x2", width)
+        .attr("y2", y(180));
+    }
+
     svg.append("g")
     .attr("class", "y axis")
     .call(yAxis)
@@ -270,7 +286,6 @@ function initd3(dataType, interval){
     .style("text-anchor", "end")
     .text(dataType.ylabel);
 
-    // In case we add labels back    
 
 
 
@@ -335,6 +350,11 @@ function initd3(dataType, interval){
 
       y.domain([0, (yMax*1.2)]);
 
+      if( currentChartType.name === "demand" )
+      {
+        y.domain([0, 200]);
+      }
+
       svg.append("g")
       .attr("class", "x axis")
       .attr("transform", "translate(0," + height + ")")
@@ -362,6 +382,17 @@ function initd3(dataType, interval){
         .datum(workingData[dataType.lines[0].section])
         .attr("class", "line")
         .attr("d", svgLines[i]);
+      }
+
+      if(currentChartType.name === "demand")
+      {
+        svg.append("line")
+          .style("stroke", "red")
+          .style("stroke-dasharray", ("3, 2"))
+          .attr("x1", 0)
+          .attr("y1", y(180))
+          .attr("x2", width)
+          .attr("y2", y(180));
       }
 
       svg.append("g")
@@ -396,7 +427,8 @@ function initd3(dataType, interval){
 
         focus.append("text")
         .attr("x", 9)
-        .attr("dy", ".35em");
+        .attr("dy", ".35em")
+        .style("color", "red");
 
         svg.append("rect")
         .attr("class", "overlay")

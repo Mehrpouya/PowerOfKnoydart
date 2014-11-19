@@ -263,7 +263,7 @@ button{
 }
 
 .area {
-  fill: #6C816A;
+  fill: #B4C9B2;
   stroke-width: 0;
 }
 
@@ -394,7 +394,7 @@ nav a{
 
 
 .cust-background {
-    background-color: #6C816A;
+    background-color: #B4C9B2;
     margin-left: 1em;
     font-size: 1.3em;
     height: 4em;
@@ -427,12 +427,12 @@ nav a{
 }
 .backgroundCustom ul li{
     /*float: left;*/
-    color: white;
+    color: #6C816A;
     margin-left: 10px;
     margin: auto;
 }
 .backgroundCustom ul li button{
-    color: white;
+    color: #253A23;
     width: 30%;
     height: 45px;
     text-decoration: none;
@@ -440,7 +440,7 @@ nav a{
     
 }
 .backgroundCustom ul li button:hover{
-    color: yellow;
+    color: white;
     border-radius: 10px;    
 }
 
