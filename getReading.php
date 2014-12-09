@@ -189,6 +189,21 @@ if ($db->connect_errno > 0) {
 
         echo json_encode($returned_array);
     }
+    else if ($type == "lastReading") {
+
+        $returned_array = array();
+        // MAIN READINGS
+        $sql = "SELECT `active_power` FROM `readings` ORDER BY `time_created` DESC limit 1";
+
+        if (!$result = $db->query($sql)) {
+            die('There was an error running the query [' . $db->error . ']');
+        }
+
+        while ($row = $result->fetch_assoc()) {
+            $returned_array[] = $row;
+        }
+        echo json_encode($returned_array);
+    }
     mysql_free_result($result);
     mysql_close();
 }

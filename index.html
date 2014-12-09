@@ -28,7 +28,23 @@
 
         <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css">
         <link rel="stylesheet" href="style.css">
+        <script>
+            (function(i, s, o, g, r, a, m) {
+                i['GoogleAnalyticsObject'] = r;
+                i[r] = i[r] || function() {
+                    (i[r].q = i[r].q || []).push(arguments)
+                }, i[r].l = 1 * new Date();
+                a = s.createElement(o),
+                        m = s.getElementsByTagName(o)[0];
+                a.async = 1;
+                a.src = g;
+                m.parentNode.insertBefore(a, m)
+            })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 
+            ga('create', 'UA-43516761-3', 'auto');
+            ga('send', 'pageview');
+
+        </script>
     </head>
 
     <body class="cf">
@@ -58,56 +74,56 @@
 
         <!--<div id="container" >-->  
 
-            <article class="span1">
-                <section>
-                    <div id="graphContainer" class="graphContainer">
+        <article class="span1">
+            <section>
+                <div id="graphContainer" class="graphContainer">
 
-                    </div>
-                </section>
-                <section class="center-contents">
-                    <button class="buttonSelected intervalToggle" id="lastHour">
-                        <!--<image src="img/icon_set/hour.png"/>-->
-                        Hour
-                    </button>
-                    <button class="intervalToggle" id="lastDay">
-                        <!--<image src="img/icon_set/day.png"/>-->
-                        Day
-                    </button>
-                    <button class="intervalToggle" id="lastWeek">
-                        <!--<image src="img/icon_set/week.png"/>-->
-                        Week
-                    </button>
-                    <button class="intervalToggle" id="lastMonth">
-                        <!--<image src="img/icon_set/month.png"/>-->
-                        Month
-                    </button>
-                </section>
-            </article>
-
-            <aside class="span9 col">
-                <!--<aside>-->
-                <div class="backgroundCustom">
-                    <ul>
-                        <li id="demand" class="chartToggle pure-menu-selected"><button id="demand" class="chartToggle cust-background chartSelected">Power Demand</button></li>
-                        <li id="rainfall" class="chartToggle"><button id="rainfall" class="chartToggle cust-background">Rainfall &amp; Dam Level</button></li>
-                        <li id="production"  class="chartToggle"><button id="production" class="chartToggle cust-background">Energy Production</button></li>
-                    </ul>
                 </div>
-                <!--<button id="demand" class="chartToggle cust-background chartSelected">Power Demand</button>-->
-                <!--<button id="rainfall" class="chartToggle cust-background">Rainfall &amp; Dam Level</button>-->
-                <!--<button id="production" class="chartToggle cust-background">Energy Production</button>-->
-                <!--</div>-->
-                <!--</aside>-->
-                <h2>Hello!</h2>
-                <p id="intro">Welcome to the Power of Knoydart. These charts show the power usage of the Knoydart community in real time. Please explore the charts and website to learn more about your local hydro resource and how your electricity consumption impacts on the community.</p>
-                <h2 id="dynamic_title">Power Demand</h2>
-                <p id="dynamic_text">This chart shows the community's total power usage in real time. If you switch on your kettle and wait 10 seconds for the chart to update you will see an increase in the community's consumption. <br/><br/>
+            </section>
+            <section class="center-contents">
+                <button class="buttonSelected intervalToggle" id="lastHour">
+                    <!--<image src="img/icon_set/hour.png"/>-->
+                    Hour
+                </button>
+                <button class="intervalToggle" id="lastDay">
+                    <!--<image src="img/icon_set/day.png"/>-->
+                    Day
+                </button>
+                <button class="intervalToggle" id="lastWeek">
+                    <!--<image src="img/icon_set/week.png"/>-->
+                    Week
+                </button>
+                <button class="intervalToggle" id="lastMonth">
+                    <!--<image src="img/icon_set/month.png"/>-->
+                    Month
+                </button>
+            </section>
+        </article>
 
-Currently, the maximum power output of the hydro system is 180kW. If our power demand goes above this level the system will shutdown. Our peak power times are between 5pm and 8pm on winter and holiday nights - please keep an eye on this chart during these times and act according to the live message updates. Thank you!</p>
-            </aside>
-            <aside class="span9 col alarmStuff">
-                <h2 class="systemAlert"></h2>
-            </aside>
+        <aside class="span9 col">
+            <!--<aside>-->
+            <div class="backgroundCustom">
+                <ul>
+                    <li id="demand" class="chartToggle pure-menu-selected"><button id="demand" class="chartToggle cust-background chartSelected">Power Demand</button></li>
+                    <li id="rainfall" class="chartToggle"><button id="rainfall" class="chartToggle cust-background">Rainfall &amp; Dam Level</button></li>
+                    <li id="production"  class="chartToggle"><button id="production" class="chartToggle cust-background">Energy Production</button></li>
+                </ul>
+            </div>
+            <!--<button id="demand" class="chartToggle cust-background chartSelected">Power Demand</button>-->
+            <!--<button id="rainfall" class="chartToggle cust-background">Rainfall &amp; Dam Level</button>-->
+            <!--<button id="production" class="chartToggle cust-background">Energy Production</button>-->
+            <!--</div>-->
+            <!--</aside>-->
+            <h2>Hello!</h2>
+            <p id="intro">Welcome to the Power of Knoydart. These charts show the power usage of the Knoydart community in real time. Please explore the charts and website to learn more about your local hydro resource and how your electricity consumption impacts on the community.</p>
+            <h2 id="dynamic_title">Power Demand</h2>
+            <p id="dynamic_text">This chart shows the community's total power usage in real time. If you switch on your kettle and wait 10 seconds for the chart to update you will see an increase in the community's consumption. <br/><br/>
+
+                Currently, the maximum power output of the hydro system is 180kW. If our power demand goes above this level the system will shutdown. Our peak power times are between 5pm and 8pm on winter and holiday nights - please keep an eye on this chart during these times and act according to the live message updates. Thank you!</p>
+        </aside>
+        <aside class="span9 col alarmStuff">
+            <h2 class="systemAlert"></h2>
+        </aside>
         <!--</div> ! end of #container -->
 
         <footer class="span2">
@@ -121,6 +137,7 @@ Currently, the maximum power output of the hydro system is 180kW. If our power d
                 </a></p>
         </footer>
         <script src="js/vis_d3.js"></script>
+
     </body>
 </html>
 
