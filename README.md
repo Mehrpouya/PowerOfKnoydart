@@ -31,43 +31,57 @@ TODO:
 <li>Add page for hosting downloads and instructions</li>
 <li>write instructions for how to install the kettle</li>
 <li>Add instructions for how to install the Kettle</li>
-
+</ul>
 <h3>day 2</h3>
 
 <h4>Website</h4>
-Bar chart for dam level visualisation
-Script to give the right data format for bar chart
-code for visualising the data as bar chart
-Lost connections!
-Website warning when tracker is down
-Make the script more resilient to the times the tracker is down
-Database
-Write a trigger that moves very old data into an archive table
-Make a script that makes a daily/weekly backup of the data
+<ul>
+<li>Bar chart for dam level visualisation</li>
+<li>Script to give the right data format for bar chart</li>
+<li>code for visualising the data as bar chart</li>
+</ul>
+</h4>
+<h4>Lost connections!</h4>
+<ul>
+<li>Website warning when tracker is down</li>
+<li>Make the script more resilient to the times the tracker is down</li>
+</ul>
+<h4>Database</h4>
+<ul>
+<li>Write a trigger that moves very old data into an archive table</li>
+<li>Make a script that makes a daily/weekly backup of the data</li>
+</ul>
 
-day 3
+<h3>day 3</h4>
 
-Github Documentation
-Update github with more info about the project
-Make github pages for all the small community projects that we're doing, under the heading Off The Grid.
-Troubleshooting procedures for Knoydart website and data kettle
-Write explanation on how to access the server and update parts of the page
-Write examples of how to read from our database
-Upload the kettle widget to github.
-upload the lighting code into github.
-write some description about kettle widget and lighting for github pages.
-Find a good licence agreement for data usage(ie when other people wants to use our API)
+<h4>Github Documentation</h4>
+<ul>
+<li>Update github with more info about the project</li>
+<li>Make github pages for all the small community projects that we're doing, under the heading Off The Grid.</li>
+<li>Troubleshooting procedures for Knoydart website and data kettle</li>
+<li>Write explanation on how to access the server and update parts of the page</li>
+<li>Write examples of how to read from our database</li>
+<li>Upload the kettle widget to github.</li>
+<li>upload the lighting code into github.</li>
+<li>write some description about kettle widget and lighting for github pages.</li>
+<li>Find a good licence agreement for data usage(ie when other people wants to use our API)</li>
+</ul>
 
 * * *
 
-Optional Extras and Add ons (Time Permitting):
-Website Improvements:
-Database structure
-Add more indexes to the tables
-Add partition tables
-Website for multiple devices
-Make the web page more responsive to smaller screens, especially tablets and rasberry pi (not mobiles)
-Report Generator
-Connect the database to a report generator so Kyle can make any report he wants
-Develop their monthly reports automatically
+<h2>Optional Extras and Add ons (Time Permitting):</h2>
+<h3>Website Improvements:</h3>
+<h4>Database structure</h4>
+<ul>
+<li>Add more indexes to the tables</li>
+<li>Add partition tables</li>
+</ul>
+<h4>Website for multiple devices</h4>
+<ul>
+<li>Make the web page more responsive to smaller screens, especially tablets and rasberry pi (not mobiles)</li>
+</ul>
+<h4>Report Generator</h4>
+<ul>
+<li>Connect the database to a report generator so Kyle can make any report he wants</li>
+<li>Develop their monthly reports automatically</li></ul>
 
