@@ -20,7 +20,7 @@ TODO:
 
 <h4>Kettle widget</h4>
 <ul>
-<li>~script that automatically installs the kettle in start up folders~</li>
+<li>~~script that automatically installs the kettle in start up folders~~</li>
 <li>script that automatically adds application shortcut on the desktop.</li>
 <li>Check functionality on Windows, Mac and Linux</li>
 <li>Export widget for Windows and Mac and Linux</li>
