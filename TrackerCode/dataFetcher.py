@@ -211,7 +211,7 @@ def getFrom(startTime=None):
     i = 1
     rawData = ''
 
-    while i < 100 and i >0:
+    while i < 50 and i >0:
         time.sleep(0.5)
         try:
             rawData += s.recv(buff)
@@ -269,13 +269,13 @@ def getFrom(startTime=None):
 def makeQuery():
     global g_step
     start=getStartTime()
-    end = (parse('{}T{}'.format(start[0], start[1]))+ datetime.timedelta(seconds=30)).strftime('%Y-%m-%dT%H:%M:%S')
+    end = (parse('{}T{}'.format(start[0], start[1]))+ datetime.timedelta(minutes=20)).strftime('%Y-%m-%dT%H:%M:%S')
     job=None
     if g_step == 0 : job="B"
     elif g_step == 1 : job="A"
     elif g_step == 2 : job="C"
 #     q='COPYD start={}T{}.00 end={}.00 sched={} \r'.format(start[0], start[1],end,job)
-    q='COPYD start={}T{} sched={} \r'.format(start[0],start[1],job)
+    q='COPYD start={}T{} end={}.00 sched={} \r'.format(start[0],start[1],end,job)
     return q
 def getStartTime():
     start=None
@@ -340,16 +340,23 @@ def setupConnection():
         print "everything is ok!"
 
 def main():
-    print time.ctime()
-    setupConnection()
-    global g_step
     while True:
-        result = getFrom()
-        if result==1:
-            g_step+=1
-            if g_step>=3 : 
-                g_step=0
-                time.sleep(3)
+        try:
+            print time.ctime()
+            setupConnection()
+            global g_step
+            while True:
+                try:
+                    result = getFrom()
+                    if result==1:
+                        g_step+=1
+                        if g_step>=3 : 
+                            g_step=0
+                            time.sleep(3)
+                except Exception:
+                    pass
+        except Exception:
+            pass
 
 if __name__ == "__main__":
     main()
