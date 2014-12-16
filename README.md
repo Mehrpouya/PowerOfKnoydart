@@ -3,10 +3,7 @@ Power Of Knoydart
 This website has been developed as part of a collaboration between Univesity of Edinburgh, Knoydart Foundation, Community Energy Scotland and Local Energy Scotland.
 
 The visualisation can be found currently at
-http://cyberscot.co.uk/powerofknoydart
-and
-http://54.69.243.242/
-
+http://powerofknoydart.org
 
 For more information please go to 
 
@@ -44,7 +41,6 @@ TODO:
 <h4>Lost connections!</h4>
 <ul>
 <li>Website warning when tracker is down</li>
-<li>Make the script more resilient to the times the tracker is down</li>
 </ul>
 <h4>Database</h4>
 <ul>
