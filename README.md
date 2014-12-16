@@ -16,6 +16,7 @@ TODO:
 <h3>day 1</h3>
 
 <h4>Kettle widget</h4>
+- [x] script that automatically installs the kettle in start up folders
 <ul>
 <li style='color:red;text-decoration:line-through'>script that automatically installs the kettle in start up folders</li>
 <li>script that automatically adds application shortcut on the desktop.</li>
