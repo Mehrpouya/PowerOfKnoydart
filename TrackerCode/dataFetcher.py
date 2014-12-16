@@ -62,9 +62,7 @@ def insertPowerData(parsedData):
             continue
 
         dataRow = [row[0]] + row[2:]
-#         end = row[0].str()
         values.append('"' + '","'.join(dataRow) + '"')
-#     g_PowerStartTime=[parsedData[len(parsedData)-1][0]]
     index=len(parsedData)-1
     potentialDate = parsedData[index][0]
     while True:
@@ -74,30 +72,22 @@ def insertPowerData(parsedData):
             continue
         g_PowerStartTime =potentialDate.split(' ')
         break
-            
-#     print "aaaaaaaa " + g_PowerStartTime
     q += '(' + '),('.join(values) + ')'
     try:
         mysql = _mysql.connect(host=conf.MYSQL_DATABASE_HOST, user=conf.MYSQL_DATABASE_USER, passwd=conf.MYSQL_DATABASE_PASSWORD, db=conf.MYSQL_DATABASE_DB)
-    # cursor = mysql.cursor()
-#         print q
         res = mysql.query(q)
-#         print res
         mysql.commit()
     except Exception:
         if conf.DEBUG :  print "error with inserting elster! potentially didn't find any values!!"
         return False
     
 def insertElsterData(parsedData):
-    
     global end
     headers = parsedData[0]
     global g_ElsterStartTime
     q = "INSERT INTO `elster_readings`(`date_created`, `elster`) VALUES "
     values = []
     for row in parsedData[0:]:
-        # print row
-#         print len(row)
         if len(row) != 3:
             if conf.DEBUG :   print 'faulty row', row
             continue
@@ -106,7 +96,6 @@ def insertElsterData(parsedData):
             continue
 
         dataRow = [row[0]] + row[2:]
-#         end = row[0].str()
         values.append('"' + '","'.join(dataRow) + '"')
     index=len(parsedData)-1
     potentialDate = parsedData[index][0]
@@ -117,21 +106,16 @@ def insertElsterData(parsedData):
             continue
         g_ElsterStartTime =potentialDate.split(' ')
         break
-#     print "finished parsing! \r"
     q += '(' + '),('.join(values) + ')'
     if conf.DEBUG : print "---------- \r"
     if conf.DEBUG : print q
     try:
         mysql = _mysql.connect(host=conf.MYSQL_DATABASE_HOST, user=conf.MYSQL_DATABASE_USER, passwd=conf.MYSQL_DATABASE_PASSWORD, db=conf.MYSQL_DATABASE_DB)
-    # cursor = mysql.cursor()
-#         print q
         res = mysql.query(q)
-#         print res
         mysql.commit()
     except Exception,e:
         if conf.DEBUG : print "error with inserting elster! potentially didn't find any values!! \r " + str(e)
         return False
-    
     
 def insertRainData(parsedData):
     
@@ -165,10 +149,7 @@ def insertRainData(parsedData):
     if conf.DEBUG : print q
     try:
         mysql = _mysql.connect(host=conf.MYSQL_DATABASE_HOST, user=conf.MYSQL_DATABASE_USER, passwd=conf.MYSQL_DATABASE_PASSWORD, db=conf.MYSQL_DATABASE_DB)
-    # cursor = mysql.cursor()
-#         print q
         res = mysql.query(q)
-#         print res
         mysql.commit()
     except Exception:
         if conf.DEBUG : print "error with inserting elster! potentially didn't find any values!!"
@@ -185,15 +166,6 @@ def getFrom(startTime=None):
     global end
     buff = 4096
     
-#     db = _mysql.connect("54.186.251.236", 
-#                     "root", # your username
-#                     "philiMYSQL", # your password
-#                     "knoydart") # name of the data base
-#     
-
-#     mysql=_mysql.connect("54.200.176.141","knoydart","5dbrABGCp6FTWNyW","powerofknoydart") 
-    
-
     complete = 'Unload complete.'
     global g_serverConnection
     s = g_serverConnection
@@ -234,8 +206,6 @@ def getFrom(startTime=None):
         if (time.clock() - startedToFetch)>=30 :
             setupConnection()
             return -1
-             
-
     else:
         if conf.DEBUG : print 'OK, either completed or too many iterations'
         s.sendall('SIGNOFF \r')
@@ -271,11 +241,18 @@ def makeQuery():
     start=getStartTime()
     end = (parse('{}T{}'.format(start[0], start[1]))+ datetime.timedelta(minutes=20)).strftime('%Y-%m-%dT%H:%M:%S')
     job=None
-    if g_step == 0 : job="B"
-    elif g_step == 1 : job="A"
-    elif g_step == 2 : job="C"
+    if g_step == 0 : 
+        job="B"
+        start = (parse('{}T{}'.format(start[0], start[1]))+ datetime.timedelta(seconds=2)).strftime('%Y-%m-%dT%H:%M:%S')
+    elif g_step == 1 : 
+        job="A"
+        start = (parse('{}T{}'.format(start[0], start[1]))+ datetime.timedelta(seconds=2)).strftime('%Y-%m-%dT%H:%M:%S')
+    elif g_step == 2 : 
+        job="C"
+        start = (parse('{}T{}'.format(start[0], start[1]))+ datetime.timedelta(minutes=5)).strftime('%Y-%m-%dT%H:%M:%S')
+        end = (parse('{}T{}'.format(start[0], start[1]))+ datetime.timedelta(minutes=120)).strftime('%Y-%m-%dT%H:%M:%S')
+    q='COPYD start={} end={}.00 sched={} \r'.format(start,end,job)
 #     q='COPYD start={}T{}.00 end={}.00 sched={} \r'.format(start[0], start[1],end,job)
-    q='COPYD start={}T{} end={}.00 sched={} \r'.format(start[0],start[1],end,job)
     return q
 def getStartTime():
     start=None
@@ -324,24 +301,27 @@ def setupConnection():
     port = conf.DATATAKER_PORT
     user = conf.DATATAKER_USER
     password = conf.DATATAKER_PASS
-    
-    if g_serverConnection != None:
+    try:
+        g_serverConnection.sendall('Q \r')
         g_serverConnection.shutdown(socket.SHUT_RDWR)
         g_serverConnection.close()
+    except Exception:
+        if conf.DEBUG : print "error with disconnecting, will try to reconnect now"  
     g_serverConnection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     result = g_serverConnection.connect_ex((host, port))
     g_serverConnection.sendall(password + " \r")
-    
     g_serverConnection.setblocking(0)
     
     if result > 0:
         print "problem with socket!"
     else:
         print "everything is ok!"
+        g_serverConnection.sendall('Q \r')
 
 def main():
     while True:
         try:
+            time.sleep(10)
             print time.ctime()
             setupConnection()
             global g_step
@@ -350,12 +330,13 @@ def main():
                     result = getFrom()
                     if result==1:
                         g_step+=1
+#                         g_step=2
                         if g_step>=3 : 
                             g_step=0
                             time.sleep(3)
                 except Exception:
                     pass
-        except Exception:
+        except Exception:         
             pass
 
 if __name__ == "__main__":
