@@ -16,12 +16,12 @@ TODO:
 ###day 1
 
 ####Kettle widget
-- [x] script that automatically installs the kettle in start up folders
-- [x] script that automatically adds application shortcut on the desktop.
+- [ ] script that automatically installs the kettle in start up folders
+- [ ] script that automatically adds application shortcut on the desktop.
 - [x] Check functionality on Windows, Mac and Linux
 - [x] Export widget for Windows 
-- [ ] Export widget for Mac
-- [ ] Export widget for Linux
+- [x] Export widget for Mac
+- [x] Export widget for Linux
 ####Kettle webpage
 - [x] Add link for downloading the Kettle widget
 - [x] Add page for hosting downloads and instructions
@@ -31,7 +31,7 @@ TODO:
 
 ####Website
 - [ ] Bar chart for dam level visualisation
-- [ ] Script to give the right data format for bar chart
+- [x] Script to give the right data format for bar chart
 - [ ] code for visualising the data as bar chart
 
 ####Lost connections!
