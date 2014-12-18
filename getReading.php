@@ -24,6 +24,7 @@ if ($db->connect_errno > 0) {
         $returned_array = array();
         $returned_array['readings'] = array();
         $returned_array['levels'] = array();
+        $returned_array['elster'] = array();
 
         // MAIN READINGS
         $sql = "SELECT `active_power`, `reactive_power`, `time_created` FROM `readings` WHERE `time_created` >= DATE_SUB( NOW(), INTERVAL 1 HOUR ) AND `time_created` <= NOW() ORDER BY `time_created`";
@@ -46,6 +47,16 @@ if ($db->connect_errno > 0) {
         while ($row = $result->fetch_assoc()) {
             $returned_array['levels'][] = $row;
         }
+        // RAIN + DAM
+        $sql = "select date_created,AVG(elster) as average_elster from elster_readings where `date_created` >= DATE_SUB( NOW(), INTERVAL 1 HOUR ) AND `date_created` <= NOW()  group by DATE(date_created), HOUR(date_created)";
+
+        if (!$result = $db->query($sql)) {
+            die('There was an error running the query [' . $db->error . ']');
+        }
+
+        while ($row = $result->fetch_assoc()) {
+            $returned_array['elster'][] = $row;
+        }
 
         // print_r($returned_array);
 
@@ -55,7 +66,7 @@ if ($db->connect_errno > 0) {
         $returned_array = array();
         $returned_array['readings'] = array();
         $returned_array['levels'] = array();
-
+        $returned_array['elster'] = array();
         // MAIN READINGS
         $sql = "SELECT `active_power`, `reactive_power`, `time_created` FROM `readings` WHERE `time_created` >= DATE_SUB( NOW(), INTERVAL 1 DAY ) AND `time_created` <= NOW() GROUP BY UNIX_TIMESTAMP(`time_created`) DIV 10";
 
@@ -78,6 +89,16 @@ if ($db->connect_errno > 0) {
 
             $returned_array['levels'][] = $row;
         }
+        
+        $sql = "select date_created,AVG(elster) as average_elster from elster_readings where `date_created` >= DATE_SUB( NOW(), INTERVAL 1 DAY ) AND `date_created` <= NOW()  group by DATE(date_created), HOUR(date_created)";
+
+        if (!$result = $db->query($sql)) {
+            die('There was an error running the query [' . $db->error . ']');
+        }
+
+        while ($row = $result->fetch_assoc()) {
+            $returned_array['elster'][] = $row;
+        }
 
         echo json_encode($returned_array);
     } else if ($type == "lastWeek") {
@@ -85,7 +106,7 @@ if ($db->connect_errno > 0) {
         $returned_array = array();
         $returned_array['readings'] = array();
         $returned_array['levels'] = array();
-
+        $returned_array['elster'] = array();
         // MAIN READINGS
         $sql = "SELECT `active_power`, `reactive_power`, `time_created` FROM `readings` WHERE `time_created` >= DATE_SUB( NOW(), INTERVAL 7 DAY ) AND `time_created` <= NOW() GROUP BY UNIX_TIMESTAMP(`time_created`) DIV 3600";
 
@@ -108,14 +129,22 @@ if ($db->connect_errno > 0) {
 
             $returned_array['levels'][] = $row;
         }
+        $sql = "select date_created,AVG(elster) as average_elster from elster_readings where `date_created` >= DATE_SUB( NOW(), INTERVAL 7 DAY ) AND `date_created` <= NOW()  group by DATE(date_created), HOUR(date_created)";
 
+        if (!$result = $db->query($sql)) {
+            die('There was an error running the query [' . $db->error . ']');
+        }
+
+        while ($row = $result->fetch_assoc()) {
+            $returned_array['elster'][] = $row;
+        }
         echo json_encode($returned_array);
     } else if ($type == "lastMonth") {
 
         $returned_array = array();
         $returned_array['readings'] = array();
         $returned_array['levels'] = array();
-
+        $returned_array['elster'] = array();
         $sql = "SELECT `active_power`, `reactive_power`, `time_created` FROM `readings` WHERE `time_created` >= DATE_SUB( NOW(), INTERVAL 30 DAY ) AND `time_created` <= NOW() GROUP BY UNIX_TIMESTAMP(`time_created`) DIV 3600";
 
         if (!$result = $db->query($sql)) {
@@ -136,7 +165,15 @@ if ($db->connect_errno > 0) {
 
             $returned_array['levels'][] = $row;
         }
+        $sql = "select date_created,AVG(elster) as average_elster from elster_readings where `date_created` >= DATE_SUB( NOW(), INTERVAL 30 DAY ) AND `date_created` <= NOW()  group by DATE(date_created), HOUR(date_created)";
 
+        if (!$result = $db->query($sql)) {
+            die('There was an error running the query [' . $db->error . ']');
+        }
+
+        while ($row = $result->fetch_assoc()) {
+            $returned_array['elster'][] = $row;
+        }
 
         echo json_encode($returned_array);
     } else if ($type == "between") {
