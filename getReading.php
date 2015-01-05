@@ -47,16 +47,6 @@ if ($db->connect_errno > 0) {
         while ($row = $result->fetch_assoc()) {
             $returned_array['levels'][] = $row;
         }
-        // RAIN + DAM
-        $sql = "select distinct date_created,SUM(elster) as average_elster from elster_readings where `date_created` >= DATE_SUB( NOW(), INTERVAL 1 HOUR ) AND `date_created` <= NOW()  group by DATE(date_created), HOUR(date_created)";
-
-        if (!$result = $db->query($sql)) {
-            die('There was an error running the query [' . $db->error . ']');
-        }
-
-        while ($row = $result->fetch_assoc()) {
-            $returned_array['elster'][] = $row;
-        }
 
         // print_r($returned_array);
 
@@ -90,7 +80,7 @@ if ($db->connect_errno > 0) {
             $returned_array['levels'][] = $row;
         }
         
-        $sql = "select distinct date_created,SUM(elster) as average_elster from elster_readings where `date_created` >= DATE_SUB( NOW(), INTERVAL 1 DAY ) AND `date_created` <= NOW()  group by DATE(date_created), HOUR(date_created)";
+        $sql = "select date_created,SUM(elster) as average_elster from (select distinct * from elster_readings where `date_created` >= DATE_SUB( NOW(), INTERVAL 1 DAY ) AND `date_created` <= NOW()) as foo  group by DATE(date_created), HOUR(date_created)";
 
         if (!$result = $db->query($sql)) {
             die('There was an error running the query [' . $db->error . ']');
@@ -129,7 +119,7 @@ if ($db->connect_errno > 0) {
 
             $returned_array['levels'][] = $row;
         }
-        $sql = "select distinct date_created,SUM(elster) as average_elster from elster_readings where `date_created` >= DATE_SUB( NOW(), INTERVAL 7 DAY ) AND `date_created` <= NOW()  group by DATE(date_created), HOUR(date_created)";
+        $sql = "select date_created,SUM(elster) as average_elster from (select distinct * from elster_readings where `date_created` >= DATE_SUB( NOW(), INTERVAL 7 DAY ) AND `date_created` <= NOW()) as foo  group by DATE(date_created), HOUR(date_created)";
 
         if (!$result = $db->query($sql)) {
             die('There was an error running the query [' . $db->error . ']');
@@ -165,7 +155,7 @@ if ($db->connect_errno > 0) {
 
             $returned_array['levels'][] = $row;
         }
-        $sql = "select distinct date_created,SUM(elster) as average_elster from elster_readings where `date_created` >= DATE_SUB( NOW(), INTERVAL 30 DAY ) AND `date_created` <= NOW()  group by DATE(date_created), HOUR(date_created)";
+        $sql = "select date_created,SUM(elster) as average_elster from (select distinct * from elster_readings where `date_created` >= DATE_SUB( NOW(), INTERVAL 30 DAY ) AND `date_created` <= NOW()) as foo group by DATE(date_created), HOUR(date_created)";
 
         if (!$result = $db->query($sql)) {
             die('There was an error running the query [' . $db->error . ']');
