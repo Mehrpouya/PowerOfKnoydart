@@ -82,12 +82,12 @@ var chartTypes = {
     name: "production",
     lines: [
         {
-          section: "readings",
-          field: "reactive_power"
+          section: "elster",
+          field: "average_elster"
         }
       ],
     bars: [],
-    yBounds: "reactive_power",
+    yBounds: "average_elster",
     ylabel: "Energy Production (kWh)",
     asideTitle: "Energy Production",
     asideText: "This chart shows the amount of energy produced each hour and day. Units of energy are measured in kilowatt hours and Knoydart Renewables currently charges 14p/kWh for the standard tariff - which is cheaper than the mainland! <br/><br/>This money is used to help maintain one of the remotest hydro power sites in the UK and provide you with reliable electricity."
@@ -465,6 +465,12 @@ function initd3(dataType, interval){
 
 function chartAutoUpdate()
 {
+
+  if(currentChartType.name !== 'demand')
+  {
+    return;
+  }
+  
   var cacheReadingsLength = chartDataCache[currentChartInterval.name].readings.length -1;
   var lastTime = ISODate( chartDataCache[currentChartInterval.name].readings[cacheReadingsLength].time_created );
 
@@ -627,7 +633,7 @@ $('.chartToggle').click(function(event) {
     return;
   }
 
-  if(buttonClicked === "rainfall")
+  if(buttonClicked === "rainfall" || buttonClicked === "production")
   {
     $('button#lastHour').hide();
     currentChartInterval = chartIntervals.lastDay;
