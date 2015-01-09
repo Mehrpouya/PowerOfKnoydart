@@ -81,12 +81,14 @@ var chartTypes = {
   production: {
     name: "production",
     lines: [
-        {
-          section: "elster",
-          field: "average_elster"
-        }
-      ],
-    bars: [],
+          {
+              section: "elster",
+              field: "average_elster"
+            }
+        ],
+    bars: [
+            
+        ],
     yBounds: "average_elster",
     ylabel: "Energy Production (kWh)",
     asideTitle: "Energy Production",
@@ -344,12 +346,25 @@ function initd3(dataType, interval){
 
       updateAlert();
 
-      // use the extent helper function to find the bounds of each axis
-      x.domain(d3.extent(workingData[dataType.lines[0].section], function(d) { return d.time_created; }));
+      var yMax;
 
-      var yMax = d3.max(workingData[dataType.lines[0].section], function(d) {
-        return +d[dataType.yBounds];
-      });
+      // if( currentChartType.name === "production"){
+      //   // use the extent helper function to find the bounds of each axis
+      //   x.domain(d3.extent(workingData[dataType.bars[0].section], function(d) { return d.time_created; }));
+
+      //   yMax = d3.max(workingData[dataType.bars[0].section], function(d) {
+      //     return +d[dataType.yBounds];
+      //   });
+      // }
+      // else
+      // {
+        // use the extent helper function to find the bounds of each axis
+        x.domain(d3.extent(workingData[dataType.lines[0].section], function(d) { return d.time_created; }));
+
+        yMax = d3.max(workingData[dataType.lines[0].section], function(d) {
+          return +d[dataType.yBounds];
+        });
+      // }
 
       y.domain([0, (yMax*1.2)]);
 
@@ -409,14 +424,20 @@ function initd3(dataType, interval){
       .text(dataType.ylabel);
 
 
-      // in case we add labels again
-      
-
-      
-
-      
-
-      
+      if(dataType.bars.length > 0)
+      {
+        console.log(workingData['elster']);
+        svg.selectAll("rect")
+          .data(workingData['elster'])
+          .enter()
+          .append("rect")
+          .attr("x", function(d, i) {
+            return (i * (width / workingData['elster'].length))-30;
+          })
+          .attr("y", 0)
+          .attr("width", 20)
+          .attr("height", 100);
+      }
 
   });
 }
@@ -448,15 +469,37 @@ function initd3(dataType, interval){
 
         focus.moveToFront();
 
-        var s = dataType.lines[0].section;
+
+        var s;
+
+        // if(currentChartType.name === 'production')
+        // {
+        //   s = dataType.bars[0].section;
+        // }
+        // else
+        // {
+          s = dataType.lines[0].section;
+        // }
 
         var x0 = x.invert(d3.mouse(this)[0]),
             i = bisectDate(workingData[s], x0, 1),
             d0 = workingData[s][i - 1],
             d1 = workingData[s][i],
             d = x0 - d0.time_created > d1.time_created - x0 ? d1 : d0;
-        focus.attr("transform", "translate(" + x(d.time_created) + "," + y(d[dataType.lines[0].field]) + ")");
-        focus.select("text").text(d[dataType.lines[0].field]);
+
+        
+        
+
+        // if(currentChartType.name === 'production')
+        // {
+        //   focus.attr("transform", "translate(" + x(d.time_created) + "," + y(d[dataType.bars[0].field]) + ")");
+        //   focus.select("text").text(d[dataType.bars[0].field]);
+        // }
+        // else
+        // {
+          focus.attr("transform", "translate(" + x(d.time_created) + "," + y(d[dataType.lines[0].field]) + ")");
+          focus.select("text").text(d[dataType.lines[0].field]);
+        // }
     }
 
 }
@@ -470,7 +513,7 @@ function chartAutoUpdate()
   {
     return;
   }
-  
+
   var cacheReadingsLength = chartDataCache[currentChartInterval.name].readings.length -1;
   var lastTime = ISODate( chartDataCache[currentChartInterval.name].readings[cacheReadingsLength].time_created );
 
@@ -532,6 +575,7 @@ function createLine(fromData, x, y){
   });
   return line;
 }
+
 
 function updateAlert()
 {
