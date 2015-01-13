@@ -38,7 +38,7 @@ TODO:
 - [ ] Website warning when tracker is down
 
 ####Database
-- [ ] Write a trigger that moves very old data into an archive table
+- [x] Write a trigger that moves very old data into an archive table
 - [ ] Make a script that makes a daily/weekly backup of the data
 
 ###day 3
