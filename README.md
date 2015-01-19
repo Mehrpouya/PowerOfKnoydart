@@ -16,8 +16,8 @@ TODO:
 ###day 1
 
 ####Kettle widget
-- [ ] script that automatically installs the kettle in start up folders
-- [ ] script that automatically adds application shortcut on the desktop.
+- [x] script that automatically installs the kettle in start up folders
+- [x] script that automatically adds application shortcut on the desktop.
 - [x] Check functionality on Windows, Mac and Linux
 - [x] Export widget for Windows 
 - [x] Export widget for Mac
@@ -30,16 +30,16 @@ TODO:
 ###day 2
 
 ####Website
-- [ ] Bar chart for dam level visualisation
+- [x] Bar chart for dam level visualisation
 - [x] Script to give the right data format for bar chart
-- [ ] code for visualising the data as bar chart
+- [x] code for visualising the data as bar chart
 
 ####Lost connections!
 - [ ] Website warning when tracker is down
 
 ####Database
 - [x] Write a trigger that moves very old data into an archive table
-- [ ] Make a script that makes a daily/weekly backup of the data
+- [x] Make a script that makes a daily/weekly backup of the data
 
 ###day 3
 
@@ -59,8 +59,8 @@ TODO:
 ##Optional Extras and Add ons (Time Permitting):
 ###Website Improvements:
 ####Database structure
-- [ ] Add more indexes to the tables
-- [ ] Add partition tables
+- [x] Add more indexes to the tables
+- [x] Add partition tables
 
 ####Website for multiple devices
 
