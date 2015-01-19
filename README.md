@@ -10,6 +10,12 @@ For more information please go to
 http://lifeoffthegrid.net/
 
 TODO:
+
+###Final:
+- [ ] Add link for downloading
+- [ ] Change Kyle color
+- [ ] Comments
+- [ ] Credits (bottom left corner and then popup
 ===============
 ##List of things to be done
 
