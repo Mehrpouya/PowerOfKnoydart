@@ -461,7 +461,7 @@ function initd3(dataType, interval){
             return (i * (width / workingData['elster'].length));
           })
           .attr("y", function (d) {
-            return height - d.average_elster;
+            return (height - d.average_elster)-1;
             // return y(d.y1);
           })
           .attr("width", (width / workingData['elster'].length) - 1)
@@ -553,9 +553,12 @@ function chartAutoUpdate()
   var lastTime = ISODate( chartDataCache[currentChartInterval.name].readings[cacheReadingsLength].time_created );
 
   $.getJSON( url+"since&since="+lastTime , function( data ) {
+    console.log('since data');
+    console.log(data);
     for (var key in workingData)
     {
-      if (workingData.hasOwnProperty(key))
+      console.log('Trying key : '+key);
+      if (workingData.hasOwnProperty(key) && key !== 'elster')
       {
         for(var i=0; i<data[key].length -1; i++)
         {
@@ -614,12 +617,11 @@ function createLine(fromData, x, y){
 
 function updateAlert()
 {
-  return;
-
   var alertString = "";
 
   for (var key in workingData)
   {
+    console.log(key);
     if (workingData.hasOwnProperty(key))
     {
       var length = workingData[key].length;
