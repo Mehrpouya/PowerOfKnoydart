@@ -451,6 +451,7 @@ nav a{
 
 
 .warning-hidden {
+    display: none;
 }
 
 #warning {

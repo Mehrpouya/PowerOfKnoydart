@@ -745,3 +745,25 @@ function showCredits(){
   $('div.modal').omniWindow() // create modal
     .trigger('show'); // and show it
 }
+
+
+$(document).ready(function(){
+    checkDataConnection();
+    setInterval(checkDataConnection,600000);
+});
+
+function checkDataConnection(){
+    console.log("checking connection");
+    var url = "http://www.powerofknoydart.org/getReading.php?type=checkLink";
+    $.post(url,{})
+            .done(function(data) {
+                if(data[0].recCount<=0){ 
+                    console.log("warnign!!!");
+                    $("#warning").show();
+        }else{
+                    $("#warning").hide();
+        }
+            });
+}
+
+//

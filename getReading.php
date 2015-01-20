@@ -89,7 +89,7 @@ if ($db->connect_errno > 0) {
 
             $returned_array['levels'][] = $row;
         }
-        
+
         $sql = "select date_created as time_created,SUM(elster) as average_elster from (select distinct * from elster_readings where `date_created` >= DATE_SUB( NOW(), INTERVAL 1 DAY ) AND `date_created` <= NOW()) as foo  group by DATE(date_created), HOUR(date_created)";
 
         if (!$result = $db->query($sql)) {
@@ -225,13 +225,26 @@ if ($db->connect_errno > 0) {
         // print_r($returned_array);
 
         echo json_encode($returned_array);
-    }
-    else if ($type == "lastReading") {
+    } else if ($type == "lastReading") {
 
         $returned_array = array();
         // MAIN READINGS
         $sql = "SELECT `active_power` FROM `readings` ORDER BY `time_created` DESC limit 1";
 
+        if (!$result = $db->query($sql)) {
+            die('There was an error running the query [' . $db->error . ']');
+        }
+
+        while ($row = $result->fetch_assoc()) {
+            $returned_array[] = $row;
+        }
+        echo json_encode($returned_array);
+    } else if ($type == "checkLink") {
+
+        $returned_array = array();
+        // MAIN READINGS
+//        $sql = "SELECT 0 as recCount";
+        $sql = "SELECT count(*) as recCount FROM `readings` WHERE `time_created` >= DATE_SUB( NOW(), INTERVAL 1 HOUR ) AND `time_created` <= NOW()";
         if (!$result = $db->query($sql)) {
             die('There was an error running the query [' . $db->error . ']');
         }
