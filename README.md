@@ -10,14 +10,21 @@ For more information please go to
 http://lifeoffthegrid.net/
 
 TODO:
+
+###Final:
+- [ ] Add link for downloading
+- [ ] Change Kyle color
+- [ ] Comments
+- [ ] Credits (bottom left corner and then popup)
+
 ===============
 ##List of things to be done
 
 ###day 1
 
 ####Kettle widget
-- [ ] script that automatically installs the kettle in start up folders
-- [ ] script that automatically adds application shortcut on the desktop.
+- [x] script that automatically installs the kettle in start up folders
+- [x] script that automatically adds application shortcut on the desktop.
 - [x] Check functionality on Windows, Mac and Linux
 - [x] Export widget for Windows 
 - [x] Export widget for Mac
@@ -30,16 +37,16 @@ TODO:
 ###day 2
 
 ####Website
-- [ ] Bar chart for dam level visualisation
+- [x] Bar chart for dam level visualisation
 - [x] Script to give the right data format for bar chart
-- [ ] code for visualising the data as bar chart
+- [x] code for visualising the data as bar chart
 
 ####Lost connections!
 - [ ] Website warning when tracker is down
 
 ####Database
-- [ ] Write a trigger that moves very old data into an archive table
-- [ ] Make a script that makes a daily/weekly backup of the data
+- [x] Write a trigger that moves very old data into an archive table
+- [x] Make a script that makes a daily/weekly backup of the data
 
 ###day 3
 
@@ -59,8 +66,8 @@ TODO:
 ##Optional Extras and Add ons (Time Permitting):
 ###Website Improvements:
 ####Database structure
-- [ ] Add more indexes to the tables
-- [ ] Add partition tables
+- [x] Add more indexes to the tables
+- [x] Add partition tables
 
 ####Website for multiple devices
 

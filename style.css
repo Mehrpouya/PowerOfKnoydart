@@ -267,6 +267,11 @@ button{
   stroke-width: 0;
 }
 
+.chartBar
+{
+  fill: #B4C9B2;
+}
+
 /* NAVIGATION */
 
 nav{
