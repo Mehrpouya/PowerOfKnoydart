@@ -444,3 +444,22 @@ nav a{
     border-radius: 10px;    
 }
 
+
+.warning-hidden {
+}
+
+#warning {
+    position: relative;
+    background-color: red;
+    color: red;
+    /*float: top;*/
+    /*top: 30%;*/
+    /*left: 5%;*/
+    text-align: center;
+    margin: auto;
+    opacity: 0.7;
+}
+#warning p{
+    background-color: transparent;
+    color: white;
+}
