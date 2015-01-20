@@ -42,7 +42,7 @@ TODO:
 - [x] code for visualising the data as bar chart
 
 ####Lost connections!
-- [ ] Website warning when tracker is down
+- [x] Website warning when tracker is down
 
 ####Database
 - [x] Write a trigger that moves very old data into an archive table
