@@ -553,11 +553,10 @@ function chartAutoUpdate()
   var lastTime = ISODate( chartDataCache[currentChartInterval.name].readings[cacheReadingsLength].time_created );
 
   $.getJSON( url+"since&since="+lastTime , function( data ) {
-    console.log('since data');
-    console.log(data);
+
     for (var key in workingData)
     {
-      console.log('Trying key : '+key);
+
       if (workingData.hasOwnProperty(key) && key !== 'elster')
       {
         for(var i=0; i<data[key].length -1; i++)
