@@ -474,14 +474,14 @@ nav a{
     position: absolute;
     bottom: 30px;
     right: 10px;
-    
+
 
 }
 
 .kettleLogo img{
     width: 50px;
     float: top;
-    
+
 }
 
 .footerImages {
@@ -502,4 +502,48 @@ nav a{
              padding: 0;
              width: 100%;
              text-align: center;
+}
+
+
+.credits{
+    position: absolute;
+    bottom: 30px;
+    left: 10px;   
+}
+
+.ow-overlay {
+    position: fixed;
+    z-index: 10;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+
+    background: #424242;
+    opacity: 0.8;
+}
+
+/* Default class for both hidden overlay and modal window */
+.ow-closed {
+    display: none;
+}
+
+/* Default class for modal window */
+.modal {
+    position: fixed;
+    z-index: 20;
+    height: 600px;
+    left: 50%;
+    top: 50px;
+    width: 500px;
+    border-radius: 5px;
+    background-color: #6C816A;
+    color: #fff;
+}
+
+.modal p {
+    padding: 10px;
+    font-size: x-large;
+
+
 }

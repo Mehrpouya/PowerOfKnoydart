@@ -23,6 +23,7 @@
           <script src="chartjs/Chart.js"></script>
         <script src="js/vis.js"></script>-->
         <script src="js/spin.js"></script>
+        <script src="js/libs/OmniWindow-1.0.0/jquery.omniwindow.js"></script>
         <script src="http://d3js.org/d3.v3.js"></script>
 
 
@@ -55,7 +56,7 @@
 
         <header class="span2" style="background-color: white;">
             <img id="topLogo" src="img/knoydart_logo.png">
-            
+
             <hr />
         </header>
 
@@ -87,7 +88,25 @@
                 </button>
             </section>
         </article>
+        <!-- Container for an overlay: --> 
+        <div class="ow-overlay ow-closed"></div> 
 
+        <!-- Container for a modal window: --> 
+        <div class="modal ow-closed">
+            <p>This website has been developed as part of a collaboration between Univesity of Edinburgh, Knoydart Foundation, Community Energy Scotland and Local Energy Scotland.</p>
+            <p>Many thanks to: 
+                <br>
+                <a href="http://www.designinformatics.org/node/220">Chris Barker</a><br>
+                <a href="http://www.lifeoffthegrid.net">Jamie Cross</a><br>
+                <a href="http://www.communityenergyscotland.org.uk/our-team.asp?id=29">Benny Talbot</a><br>
+                <a href="http://uk.linkedin.com/in/marguslind">Margus Lind</a><br>
+                <a href="http://www.hadi.link">Hadi Mehrpouya</a><br>
+                <a href="http://highlandenvironment.org.uk/directory.asp?SID=1">Kyle Smith</a><br>
+            </p>
+            
+            
+            
+        </div>
         <aside class="span9 col">
             <!--<aside>-->
             <div class="backgroundCustom">
@@ -126,8 +145,9 @@
                     Click here to view the license terms for this data
                 </a>
             </p>
+            <div class="credits" onclick="showCredits()"><img src="img/info.png" style="height: 50px; cursor: pointer"></div>
         </div>
-        
+
         <script src="js/vis_d3.js"></script>
 
     </body>

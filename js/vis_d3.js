@@ -738,3 +738,10 @@ $('.chartToggle').click(function(event) {
   cleard3();
   initd3(currentChartType, currentChartInterval);
 });
+
+
+
+function showCredits(){
+  $('div.modal').omniWindow() // create modal
+    .trigger('show'); // and show it
+}
