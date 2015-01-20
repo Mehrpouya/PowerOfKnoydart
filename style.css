@@ -538,13 +538,21 @@ nav a{
     top: 50px;
     width: 500px;
     border-radius: 5px;
-    background-color: #6C816A;
+    background-color: #253A23;
     color: #fff;
 }
+
 
 .modal p {
     padding: 10px;
     font-size: x-large;
+
+
+}
+.modal p a {
+    color: #bbb;
+    padding-left: 10px;
+    text-decoration: none;
 
 
 }
