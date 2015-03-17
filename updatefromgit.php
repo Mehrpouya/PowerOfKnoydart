@@ -1,3 +1,3 @@
 <?php <?php
-        echo shell_exec("/usr/bin/git pull 2>&1");
+        echo exec("/usr/bin/git pull 2>&1");
 ?>
