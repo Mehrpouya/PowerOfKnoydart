@@ -24,9 +24,7 @@ time, mark, audio, video {
     background:transparent;
 
 } 
-body{
-    background-color: #a00;
-}
+
 header{
     text-align: center;
 
@@ -99,7 +97,7 @@ body{
     color: #252e35; 
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; 
     line-height: 1.5em;
-    background: #fff;  
+    background: #f00;  
 }
 
 footer{
