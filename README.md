@@ -7,11 +7,12 @@ http://powerofknoydart.org
 
 # How to edit the wesite:
 
-First Login to ithub with the community username and password.
-The process of editing the website has three stages:
-- Find the file you want to edit, open it here on github and click on edit.
+Login to Github with the community username and password.
+
+The process of editing the website has three stages (explained in greater detail below):
+- Find the file you want to edit, open it and click Edit.
 - Add your changes to the file.
-- Commit your changes to github by using the commit space at the bottom of the page you're editing your file from.
+- Commit your changes by using the 'Commit' space at the bottom of the page.
 
 
 ## Website structure:
@@ -23,12 +24,14 @@ The power of Knoydart website consists of three main files
 - [js/vis_d3.js](https://github.com/Mehrpouya/PowerOfKnoydart/edit/master/js/vis_d3.js)
 
 [index.html](https://github.com/Mehrpouya/PowerOfKnoydart/edit/master/index.html) file holds the structure of the page, like the Knoydart foundation logo, visualisation on the left and info on the right side of the page.
+
 [style.css](https://github.com/Mehrpouya/PowerOfKnoydart/edit/master/style.css) consists of design elements, like color of information block, background color, font style and so on.
-[vis_d3.j](https://github.com/Mehrpouya/PowerOfKnoydart/edit/master/js/vis_d3.js) takes care of things like fetching the data from the tracker, drawing the graph, responding to user mouse clicks on different buttons, and it also have the list of situations to show at the bottom of the info window, for example when it says "feel free to use as much energy as you like". 
 
-Before editing any of these three files, **first** it is important to separate your tasks and things you want to change make sure which file you need to edit in order to add your changes.
+[vis_d3.j](https://github.com/Mehrpouya/PowerOfKnoydart/edit/master/js/vis_d3.js) takes care of things like fetching the data from the datataker, drawing the graph, responding to user mouse clicks on different buttons, and presenting different messages in the info window, for example when it says "feel free to use as much energy as you like". 
 
-for example, you want to get rid of a section on the page and change the background color to light green. The deleting section change will be part of the index.html file and the color needs to be changed by using the style.css files.
+Before editing any of these three files, **first** it is important to separate your tasks and make sure which file you need to edit.
+
+For example, if you want to delete a section of text on the page and change the background color to light green. The deleting section change needs to take place in the index.html file and the color change needs to take place in the style.css files.
 
 ### Where to find each of these files
 
