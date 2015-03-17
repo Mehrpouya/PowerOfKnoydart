@@ -45,11 +45,11 @@ For example to change the background color of the page and the text color this i
 
 This is the section in the **style.css** you want to add for the background color:
 
-'''css
+``` css
 body{
 background-color: #000;
 }
-'''
+```
 
 ## Developing your own app
 
