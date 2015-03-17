@@ -5,76 +5,54 @@ This website has been developed as part of a collaboration between Univesity of 
 The visualisation can be found currently at
 http://powerofknoydart.org
 
-For more information please go to 
+# How to edit the wesite:
 
-http://lifeoffthegrid.net/
+First Login to ithub with the community username and password.
+The process of editing the website has three stages:
+- Find the file you want to edit, open it here on github and click on edit.
+- Add your changes to the file.
+- Commit your changes to github by using the commit space at the bottom of the page you're editing your file from.
 
-TODO:
 
-###Final:
-- [x] Add link for downloading
-- [x] Change Kyle color
-- [x] Comments
-- [x] Credits (bottom left corner and then popup)
+## Website structure:
 
-===============
-##List of things to be done
+The power of Knoydart website consists of three main files
+  
+- Index.html
+- Style.css
+- js/vis_d3.js
 
-###day 1
+**Index.html** file holds the structure of the page, like the Knoydart foundation logo, visualisation on the left and info on the right side of the page.
+**Style.css** consists of design elements, like color of information block, background color, font style and so on.
+**vis_d3.j** takes care of things like fetching the data from the tracker, drawing the graph, responding to user mouse clicks on different buttons, and it also have the list of situations to show at the bottom of the info window, for example when it says "feel free to use as much energy as you like". 
 
-####Kettle widget
-- [x] script that automatically installs the kettle in start up folders
-- [x] script that automatically adds application shortcut on the desktop.
-- [x] Check functionality on Windows, Mac and Linux
-- [x] Export widget for Windows 
-- [x] Export widget for Mac
-- [x] Export widget for Linux
-####Kettle webpage
-- [x] Add link for downloading the Kettle widget
-- [x] Add page for hosting downloads and instructions
-- [x] write instructions for how to install the kettle
+Before editing any of these three files, **first** it is important to separate your tasks and things you want to change make sure which file you need to edit in order to add your changes.
 
-###day 2
+for example, you want to get rid of a section on the page and change the background color to light green. The deleting section change will be part of the index.html file and the color needs to be changed by using the style.css files.
 
-####Website
-- [x] Bar chart for dam level visualisation
-- [x] Script to give the right data format for bar chart
-- [x] code for visualising the data as bar chart
+### Where to find each of these files
 
-####Lost connections!
-- [x] Website warning when tracker is down
+The **index.html** and **style.css** are both in the root of this repository. and the **vis_d3.js** is inside the **js** folder.
 
-####Database
-- [x] Write a trigger that moves very old data into an archive table
-- [x] Make a script that makes a daily/weekly backup of the data
+### Examples:
+Changing background color:
 
-###day 3
+For example to change the background color of the page and the text color this is what you need to do:
 
-####Github Documentation
-- [ ] Update github with more info about the project
-- [ ] Make github pages for all the small community projects that we're doing, under the heading Off The Grid.
-- [ ] Troubleshooting procedures for Knoydart website and data kettle
-- [ ] Write explanation on how to access the server and update parts of the page
-- [ ] Write examples of how to read from our database
-- [ ] Upload the kettle widget to github.
-- [ ] upload the lighting code into github.
-- [ ] write some description about kettle widget and lighting for github pages.
-- [ ] Find a good licence agreement for data usage(ie when other people wants to use our API)
+- Click on **style.css**
+- click on edit so you can start adding your changes 
+- Commit your changes
 
-* * *
+This is the section in the **style.css** you want to add for the background color:
 
-##Optional Extras and Add ons (Time Permitting):
-###Website Improvements:
-####Database structure
-- [x] Add more indexes to the tables
-- [x] Add partition tables
+'''css
+body{
+background-color: #000;
+}
+'''
 
-####Website for multiple devices
+## Developing your own app
 
-- [ ] Make the web page more responsive to smaller screens, especially tablets and rasberry pi (not mobiles)
+If you would like to develop you own app, please go to our githubu page for more details on the data api and our privacy and licence agreements.
 
-####Report Generator
-
-- [ ] Connect the database to a report generator so Kyle can make any report he wants
-- [ ] Develop their monthly reports automatically
 
