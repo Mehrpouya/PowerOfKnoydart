@@ -43,11 +43,15 @@ For example to change the background color of the page and the text color this i
 - click on edit so you can start adding your changes 
 - Commit your changes
 
-This is the section in the **style.css** you want to add for the background color:
+This is the section in the **style.css** you want to change for the background color, font or font-size:
 
 ``` css
-body{
-background-color: #000;
+body{ 
+    font-size: 87.5%;
+    color: #252e35; 
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; 
+    line-height: 1.5em;
+    background: #f00;  
 }
 ```
 
