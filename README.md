@@ -18,13 +18,13 @@ The process of editing the website has three stages:
 
 The power of Knoydart website consists of three main files
   
-- Index.html
-- Style.css
-- js/vis_d3.js
+- [index.html](https://github.com/Mehrpouya/PowerOfKnoydart/edit/master/index.html)
+- [style.css](https://github.com/Mehrpouya/PowerOfKnoydart/edit/master/style.css)
+- [js/vis_d3.js](https://github.com/Mehrpouya/PowerOfKnoydart/edit/master/js/vis_d3.js)
 
-**Index.html** file holds the structure of the page, like the Knoydart foundation logo, visualisation on the left and info on the right side of the page.
-**Style.css** consists of design elements, like color of information block, background color, font style and so on.
-**vis_d3.j** takes care of things like fetching the data from the tracker, drawing the graph, responding to user mouse clicks on different buttons, and it also have the list of situations to show at the bottom of the info window, for example when it says "feel free to use as much energy as you like". 
+[index.html](https://github.com/Mehrpouya/PowerOfKnoydart/edit/master/index.html) file holds the structure of the page, like the Knoydart foundation logo, visualisation on the left and info on the right side of the page.
+[style.css](https://github.com/Mehrpouya/PowerOfKnoydart/edit/master/style.css) consists of design elements, like color of information block, background color, font style and so on.
+[vis_d3.j](https://github.com/Mehrpouya/PowerOfKnoydart/edit/master/js/vis_d3.js) takes care of things like fetching the data from the tracker, drawing the graph, responding to user mouse clicks on different buttons, and it also have the list of situations to show at the bottom of the info window, for example when it says "feel free to use as much energy as you like". 
 
 Before editing any of these three files, **first** it is important to separate your tasks and things you want to change make sure which file you need to edit in order to add your changes.
 
@@ -32,7 +32,7 @@ for example, you want to get rid of a section on the page and change the backgro
 
 ### Where to find each of these files
 
-The **index.html** and **style.css** are both in the root of this repository. and the **vis_d3.js** is inside the **js** folder.
+The [index.html](https://github.com/Mehrpouya/PowerOfKnoydart/edit/master/index.html) and [style.css](https://github.com/Mehrpouya/PowerOfKnoydart/edit/master/style.css) are both in the root of this repository. and the [vis_d3.js](https://github.com/Mehrpouya/PowerOfKnoydart/edit/master/js/vis_d3.js) is inside the [js](https://github.com/Mehrpouya/PowerOfKnoydart/tree/master/js) folder.
 
 ### Examples:
 Changing background color:
