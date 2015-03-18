@@ -47,9 +47,12 @@ You can explain what you have done in the Commit changes box"
 -Click commit
 
 To edit the text in the box on the bottom left (this text changes according power demand info from the datataker)
+
 -Click on **js/vis_d3.js**
+
 -scroll through the text and find the text you want to edit and edit it.
-the stuff inside arrows is code - dont mess with the code
+
+-the stuff inside "double Quotes" is human laguage, this is what you want to edit, the rest is code - dont mess with the code
 
 
 Changing background color:
