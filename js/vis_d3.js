@@ -110,7 +110,7 @@ var chartIntervals = {
     xFormat: "%a %d %b"
   }
 };
-//***this is where you change the text that appears in the box that depends on power use on the bottom left of page
+//***this is where you change the text that appears in the box that depends on power use on the bottom left of page max 126 characters
 var chartAlertStrings = {
   over_power: "WARNING – We are using too much power! Please switch off all unnecessary appliances immediately!",
   high_power: "Our power usage is currently HIGH please refrain from switching on unnecessary electrical appliances.",
