@@ -38,6 +38,9 @@ For example, if you want to delete a section of text on the page and change the 
 The [index.html](https://github.com/Mehrpouya/PowerOfKnoydart/edit/master/index.html) and [style.css](https://github.com/Mehrpouya/PowerOfKnoydart/edit/master/style.css) are both in the root of this repository. and the [vis_d3.js](https://github.com/Mehrpouya/PowerOfKnoydart/edit/master/js/vis_d3.js) is inside the [js](https://github.com/Mehrpouya/PowerOfKnoydart/tree/master/js) folder.
 
 ### Examples:
+To change the text in the green box (the text in this box stays the same regardless of what the hydro is doing):
+-Click on **index.html**
+
 Changing background color:
 
 For example to change the background color of the page and the text color this is what you need to do:
