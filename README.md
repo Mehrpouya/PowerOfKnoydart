@@ -39,7 +39,18 @@ The [index.html](https://github.com/Mehrpouya/PowerOfKnoydart/edit/master/index.
 
 ### Examples:
 To change the text in the green box (the text in this box stays the same regardless of what the hydro is doing):
+
 -Click on **index.html**
+Scroll through the text and find the bit you want to edit and edit it.
+(remember the stuff inside the arrows is Hadi's code, you mess with the code, you mess with Hadi.)
+You can explain what you have done in the Commit changes box"
+-Click commit
+
+To edit the text in the box on the bottom left (this text changes according power demand info from the datataker)
+-Click on **js/vis_d3.js**
+-scroll through the text and find the text you want to edit and edit it.
+the stuff inside arrows is code - dont mess with the code
+
 
 Changing background color:
 
