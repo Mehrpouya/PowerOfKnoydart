@@ -110,11 +110,11 @@ var chartIntervals = {
     xFormat: "%a %d %b"
   }
 };
-
+//***this is where you change the text that appears in the box that depends on power use on the bottom left of page
 var chartAlertStrings = {
   over_power: "WARNING – We are using too much power! Please switch off all unnecessary appliances immediately!",
   high_power: "Our power usage is currently HIGH please refrain from switching on unnecessary electrical appliances.",
-  normal_power: "Our power usage is just right, feel free to do whatever you want!",
+  normal_power: "We are ticking over nicely and making good money for the community, still more power available to get that hoovering finished",
   spare_power: "Hey! We have loads of spare power available. Why don’t you do some laundry, use your power tools, cook tomorrow’s meal or switch the heating on.",
   dam_low: "We are currently experiencing a dry spell and the dam depth is lower than normal. Please be considerate when consuming electricity.",
   power_off: "We are currently using the diesel generator to provide electricity. Please conserve your energy usage until this message changes."
