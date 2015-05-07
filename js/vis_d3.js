@@ -88,7 +88,7 @@ var chartTypes = {
     yBounds: "average_elster",
     ylabel: "Energy Production (kWh)",
     asideTitle: "Energy Production",
-    asideText: "This chart shows the amount of energy produced each hour and day. Units of energy are measured in kilowatt hours and Knoydart Renewables currently charges 14p/kWh for the standard tariff - which is cheaper than the mainland! <br/><br/>This money is used to help maintain one of the remotest hydro power sites in the UK and provide you with reliable electricity."
+    asideText: "This chart shows the amount of energy produced each hour and day. Units of energy are measured in kilowatt hours and billed to the community on a quarterly basis. <br/><br/>This money is used to help maintain one of the remotest hydro power sites in the UK and provide you with reliable electricity."
   }
 };
 
