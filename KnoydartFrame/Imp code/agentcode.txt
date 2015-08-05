@@ -1,0 +1,87 @@
+/*
+ * Copyright (C) 2015 Hadi Mehrpouya
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+local urlBase = "http://powerofknoydart.org/getReading.php?type=lastReading";
+
+function requestHandler(){
+    server.log ("request Handler");
+  //try {
+    // check if the user sent val as a query parameter
+            local valReq = http.get("http://www.powerofknoydart.org/getImp.php")
+            local valRes = valReq.sendsync();         //send request
+    if(valRes.statuscode != 200) {
+        server.log("error sending message: " + valRes.body);
+    }else {
+        local val = valRes.body.tointeger();
+        server.log("value: " + val); 
+        local rgb = getColor(val=val);
+        device.send ("val", rgb);
+        server.log("value: " + rgb);
+        
+    }
+imp.wakeup(10, requestHandler);     //schedule when to wakeup again
+}
+function map(x, in_min, in_max, out_min, out_max)
+{
+  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
+//get max
+function getColor(num){
+    local val = num;
+    local rgb="";
+            if (num>150 && num<=180){
+                val=val/180.0;
+                val = val*255;//this is for converting the number to 255
+                val = val.tointeger();
+                rgb="000000";
+                if (val<100)
+                val = "0"+val
+                rgb=val+rgb
+                server.log("rgb!: " + rgb);
+            }
+        else if (num>100 && num<=150){
+                val=val/150.0;
+                val = val*255;//this is for converting the number to 255
+                val = val.tointeger();
+                
+                val = 255-val;
+                rgb="255255";
+                if (val<100)
+                val = "0"+val
+                rgb+=val;
+        }
+        else if( num>0 && num<=100){
+            val=val/100.0;
+            server.log("val is: " + val);
+
+                val = val*255.0;//this is for converting the number to 255
+                server.log("val is: " + val);
+                val = val.tointeger();
+                val = val;
+                server.log("val is: " + val);
+                rgb="000";
+                if (val<100)
+                val = "0"+val
+                rgb+=val + "000";
+                
+        }
+        else if( num==0){
+            rgb+="000255000";
+        }
+        return rgb;
+}
+requestHandler();
